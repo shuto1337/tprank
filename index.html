@@ -1,160 +1,207 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tprank | tretiy1337.ru</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tprank</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a14;
+    color: #fff;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding: 40px 20px 80px;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  /* Радужная полоса сверху */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    z-index: 999;
+    background: linear-gradient(90deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff, #ff0000);
+    background-size: 300% 100%;
+    animation: rainbowMove 3s linear infinite;
+  }
+  @keyframes rainbowMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+  }
 
-        body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0a0a14 0%, #1a1a2e 100%);
-            color: #fff;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+  .container { max-width: 640px; margin: 0 auto; }
 
-        h1 {
-            font-size: 32px;
-            font-weight: 900;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #ff0044, #ff6600, #ffcc00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-align: center;
-        }
+  h1 {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ff0044, #ff6600, #ffcc00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+  }
+  .sub {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 40px;
+    text-align: center;
+  }
 
-        .sub {
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 
-        .list {
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+  .prank-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    text-decoration: none;
+    color: #fff;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .prank-link::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,0,68,0.15), transparent);
+    transition: left 0.6s;
+    pointer-events: none;
+  }
+  .prank-link:hover::before { left: 100%; }
+  .prank-link:hover {
+    background: rgba(255,0,68,0.15);
+    border-color: #ff0044;
+    transform: translateX(6px);
+    box-shadow: 0 10px 30px rgba(255,0,68,0.3);
+  }
 
-        .prank-link {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 18px 22px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            text-decoration: none;
-            color: #fff;
-            transition: all 0.25s;
-        }
+  .prank-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
 
-        .prank-link:hover {
-            background: rgba(255, 0, 68, 0.15);
-            border-color: #ff0044;
-            transform: translateX(6px);
-            box-shadow: 0 10px 30px rgba(255, 0, 68, 0.3);
-        }
+  .prank-info { flex: 1; min-width: 0; }
+  .prank-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    word-break: break-word;
+  }
+  .prank-id {
+    font-size: 11px;
+    color: #666;
+    font-family: 'Consolas', monospace;
+  }
 
-        .prank-num {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #ff0044, #ff6600);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 16px;
-            flex-shrink: 0;
-        }
+  .prank-arrow {
+    font-size: 20px;
+    color: #ff0044;
+    flex-shrink: 0;
+    transition: transform 0.25s;
+  }
+  .prank-link:hover .prank-arrow { transform: translateX(4px); }
 
-        .prank-name {
-            font-size: 16px;
-            font-weight: 700;
-        }
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-size: 14px;
+  }
+  .loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-size: 14px;
+  }
 
-        .prank-url {
-            font-size: 11px;
-            color: #666;
-            font-family: 'Consolas', monospace;
-            margin-top: 2px;
-        }
-
-        .footer {
-            margin-top: 50px;
-            color: #555;
-            font-size: 13px;
-            text-align: center;
-        }
-
-        .footer a {
-            color: #ff0044;
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        .footer a:hover { text-decoration: underline; }
-    </style>
+  .footer {
+    margin-top: 50px;
+    color: #555;
+    font-size: 13px;
+    text-align: center;
+  }
+  .footer a {
+    color: #ff0044;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .footer a:hover { text-decoration: underline; }
+</style>
 </head>
 <body>
+<div class="container">
+  <h1>tprank</h1>
+  <div class="sub">Выбирай пранк — записывай на NFC-метку</div>
 
-    <h1>tprank</h1>
-    <div class="sub">Выбирай пранк — записывай на NFC-метку</div>
+  <div class="list" id="prankList">
+    <div class="loading">Загрузка...</div>
+  </div>
 
-    <div class="list">
-        <a href="febmoy.html" class="prank-link">
-            <div class="prank-num">1</div>
-            <div>
-                <div class="prank-name">Где мой любимый фембойчик</div>
-                <div class="prank-url">febmoy.html</div>
-            </div>
-        </a>
+  <div class="footer">
+    Сделал <a href="https://tretiy1337.ru" target="_blank">tretiy1337.ru</a>
+  </div>
+</div>
 
-        <a href="litvin.html" class="prank-link">
-            <div class="prank-num">2</div>
-            <div>
-                <div class="prank-name">Литвин</div>
-                <div class="prank-url">litvin.html</div>
-            </div>
-        </a>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script>
+(function() {
+  const firebaseConfig = {
+    apiKey: "AIzaSyDGb-vDdeM3vbACbIqQ_Yy4Yom6vsQdViY",
+    authDomain: "unogame-9414d.firebaseapp.com",
+    databaseURL: "https://unogame-9414d-default-rtdb.firebaseio.com",
+    projectId: "unogame-9414d",
+    storageBucket: "unogame-9414d.firebasestorage.app",
+    messagingSenderId: "609200346253",
+    appId: "1:609200346253:web:4ca96722ecad9ea0cffec4"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 
-        <a href="djigit.html" class="prank-link">
-            <div class="prank-num">3</div>
-            <div>
-                <div class="prank-name">Стон</div>
-                <div class="prank-url">djigit.html</div>
-            </div>
-        </a>
+  function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-        <a href="svin.html" class="prank-link">
-            <div class="prank-num">4</div>
-            <div>
-                <div class="prank-name">Визг свиньи</div>
-                <div class="prank-url">svin.html</div>
-            </div>
-        </a>
+  const list = document.getElementById('prankList');
 
-        <a href="adminarbuse.html" class="prank-link">
-            <div class="prank-num">5</div>
-            <div>
-                <div class="prank-name">Запустил админ арбуз</div>
-                <div class="prank-url">adminarbuse.html</div>
-            </div>
-        </a>
-    </div>
+  db.ref('pranks').on('value', snap => {
+    const data = snap.val() || {};
+    const keys = Object.keys(data).sort((a, b) => (data[a].order || 0) - (data[b].order || 0));
 
-    <div class="footer">
-        Сделал <a href="https://tretiy1337.ru" target="_blank">tretiy1337.ru</a>
-    </div>
+    if (!keys.length) {
+      list.innerHTML = '<div class="empty">Пранков пока нет</div>';
+      return;
+    }
 
+    list.innerHTML = keys.map(k => {
+      const p = data[k];
+      return `<a href="${esc(k)}.html" class="prank-link">
+        <div class="prank-img" style="background-image: url('${esc(p.image)}')"></div>
+        <div class="prank-info">
+          <div class="prank-title">${esc(p.title || k)}</div>
+          <div class="prank-id">${esc(k)}.html</div>
+        </div>
+        <div class="prank-arrow">→</div>
+      </a>`;
+    }).join('');
+  });
+})();
+</script>
 </body>
 </html>
