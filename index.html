@@ -12,10 +12,7 @@
     font-family: 'Segoe UI', system-ui, sans-serif;
     padding: 40px 20px 80px;
     min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
   }
-  /* Радужная полоса сверху */
   body::before {
     content: '';
     position: fixed;
@@ -50,17 +47,13 @@
     text-align: center;
   }
 
-  .list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+  .list { display: flex; flex-direction: column; gap: 12px; }
 
   .prank-link {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 16px 20px;
+    padding: 18px 22px;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 16px;
@@ -87,29 +80,9 @@
     box-shadow: 0 10px 30px rgba(255,0,68,0.3);
   }
 
-  .prank-img {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    background-size: cover;
-    background-position: center;
-    flex-shrink: 0;
-    border: 1px solid rgba(255,255,255,0.15);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  }
-
   .prank-info { flex: 1; min-width: 0; }
-  .prank-title {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 2px;
-    word-break: break-word;
-  }
-  .prank-id {
-    font-size: 11px;
-    color: #666;
-    font-family: 'Consolas', monospace;
-  }
+  .prank-title { font-size: 16px; font-weight: 700; margin-bottom: 2px; word-break: break-word; }
+  .prank-id { font-size: 11px; color: #666; font-family: 'Consolas', monospace; }
 
   .prank-arrow {
     font-size: 20px;
@@ -119,13 +92,7 @@
   }
   .prank-link:hover .prank-arrow { transform: translateX(4px); }
 
-  .empty {
-    text-align: center;
-    padding: 60px 20px;
-    color: #666;
-    font-size: 14px;
-  }
-  .loading {
+  .empty, .loading {
     text-align: center;
     padding: 60px 20px;
     color: #666;
@@ -138,11 +105,7 @@
     font-size: 13px;
     text-align: center;
   }
-  .footer a {
-    color: #ff0044;
-    text-decoration: none;
-    font-weight: 700;
-  }
+  .footer a { color: #ff0044; text-decoration: none; font-weight: 700; }
   .footer a:hover { text-decoration: underline; }
 </style>
 </head>
@@ -182,7 +145,7 @@
 
   db.ref('pranks').on('value', snap => {
     const data = snap.val() || {};
-    const keys = Object.keys(data).sort((a, b) => (data[a].order || 0) - (data[b].order || 0));
+    const keys = Object.keys(data).sort();
 
     if (!keys.length) {
       list.innerHTML = '<div class="empty">Пранков пока нет</div>';
@@ -192,7 +155,6 @@
     list.innerHTML = keys.map(k => {
       const p = data[k];
       return `<a href="${esc(k)}.html" class="prank-link">
-        <div class="prank-img" style="background-image: url('${esc(p.image)}')"></div>
         <div class="prank-info">
           <div class="prank-title">${esc(p.title || k)}</div>
           <div class="prank-id">${esc(k)}.html</div>
