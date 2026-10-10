@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Загрузка MAX</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+    background: #ffffff;
+    color: #1a1a1a;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 380px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 28px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+
+  .logo {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .progress-wrap {
+    margin-bottom: 24px;
+  }
+  .progress-bar {
+    height: 8px;
+    background: #eef1f5;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2d6cff, #0047cc);
+    border-radius: 100px;
+    width: 68%;
+    animation: progressAnim 2s ease-in-out infinite;
+  }
+  @keyframes progressAnim {
+    0% { width: 68%; }
+    50% { width: 82%; }
+    100% { width: 68%; }
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #888;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+    background: #eef1f5;
+    color: #1a1a1a;
+  }
+  button:hover {
+    background: #e2e6ec;
+    transform: translateY(-1px);
+  }
+  button:active {
+    transform: scale(0.97);
+  }
+
+  .footer-note {
+    margin-top: 18px;
+    font-size: 11px;
+    color: #aaa;
+  }
+
+  audio {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Max_logo_2025.png" alt="MAX">
+    </div>
+    <h1>Загрузка MAX</h1>
+    <p class="subtitle">Мессенджер нового поколения<br>Загрузка приложения...</p>
+
+    <div class="progress-wrap">
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+      <div class="progress-info">
+        <span id="percent">68%</span>
+        <span>~3 мин</span>
+      </div>
+    </div>
+
+    <button id="cancelBtn">Отменить</button>
+
+    <div class="footer-note">
+      Осталось совсем немного...
+    </div>
+  </div>
+
+  <audio id="audio" loop></audio>
+
+<script>
+(function() {
+  const SOUND_URL = 'https://sndtag.ru/static/assets/funk.mp3';
+
+  const audio = document.getElementById('audio');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const percent = document.getElementById('percent');
+
+  // Проценты растут для реализма
+  let currentPercent = 68;
+  setInterval(() => {
+    currentPercent += Math.floor(Math.random() * 3) + 1;
+    if (currentPercent > 95) currentPercent = 68;
+    percent.textContent = currentPercent + '%';
+  }, 1500);
+
+  // Кнопка «Отменить» — включает звук
+  cancelBtn.addEventListener('click', () => {
+    audio.src = SOUND_URL;
+    audio.volume = 1.0;
+    audio.currentTime = 0;
+    audio.loop = true;
+    audio.play().catch(e => console.log('Звук не пошёл:', e));
+  });
+})();
+</script>
+</body>
+</html>
