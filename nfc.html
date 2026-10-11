@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>tprank · NFC</title>
+<meta name="theme-color" content="#0a0a14">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    background: #0a0a14;
+    color: #fff;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding: 30px 20px 80px;
+    min-height: 100vh;
+  }
+  .container { max-width: 560px; margin: 0 auto; }
+  h1 {
+    font-size: 26px; font-weight: 900; margin-bottom: 6px;
+    background: linear-gradient(135deg, #ff0044, #ff6600, #ffcc00);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .sub { color: #888; font-size: 13px; margin-bottom: 30px; }
+  .card {
+    background: rgba(18,18,31,0.7);
+    border: 1px solid #2a2a40;
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 18px;
+  }
+  .card h3 { font-size: 15px; font-weight: 800; margin-bottom: 14px; color: #ff6b6b; }
+  label {
+    display: block; font-size: 12px; color: #888;
+    margin-bottom: 6px; margin-top: 12px;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+  }
+  input[type="text"], textarea, select {
+    width: 100%; padding: 12px 14px;
+    background: #0a0a14; border: 1px solid #2a2a40;
+    border-radius: 10px; color: #fff; font-size: 15px;
+    font-family: inherit; outline: none; transition: 0.2s;
+  }
+  input[type="text"]:focus, textarea:focus, select:focus { border-color: #ff0044; }
+  input[type="text"]:disabled { opacity: 0.5; cursor: not-allowed; }
+  textarea { resize: vertical; min-height: 70px; }
+  .checkbox-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 14px; padding: 12px 14px;
+    background: rgba(255,0,68,0.05);
+    border: 1px solid rgba(255,0,68,0.25);
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .checkbox-row:hover { background: rgba(255,0,68,0.1); }
+  .checkbox-row input[type="checkbox"] {
+    width: 20px; height: 20px;
+    accent-color: #ff0044;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .checkbox-row span {
+    font-size: 14px; font-weight: 700; color: #fff;
+    text-transform: none; letter-spacing: 0; margin: 0;
+  }
+  .checkbox-hint { font-size: 12px; color: #888; margin-top: 6px; line-height: 1.5; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%;
+    padding: 15px 22px; border-radius: 12px; border: none;
+    font-size: 15px; font-weight: 800; cursor: pointer;
+    font-family: inherit; transition: 0.2s; margin-top: 16px;
+    background: linear-gradient(135deg, #ff0044, #ff6600);
+    color: #fff; box-shadow: 0 8px 24px rgba(255,0,68,0.3);
+    text-decoration: none;
+  }
+  .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,0,68,0.5); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-danger {
+    background: linear-gradient(135deg, #ff0044, #cc0033);
+    box-shadow: 0 8px 24px rgba(255,0,68,0.5);
+    animation: pulseDanger 1.5s ease-in-out infinite;
+  }
+  @keyframes pulseDanger {
+    0%, 100% { box-shadow: 0 8px 24px rgba(255,0,68,0.5), 0 0 0 0 rgba(255,0,68,0.7); }
+    50% { box-shadow: 0 8px 24px rgba(255,0,68,0.5), 0 0 0 15px rgba(255,0,68,0); }
+  }
+  .btn-active {
+    background: linear-gradient(135deg, #00d68f, #00a06b);
+    box-shadow: 0 8px 24px rgba(0,214,143,0.4);
+    animation: none;
+  }
+  .btn-secondary { background: rgba(255,255,255,0.08); box-shadow: none; margin-top: 10px; }
+  .btn-purple { background: linear-gradient(135deg, #6c5ce7, #a29bfe); box-shadow: 0 8px 24px rgba(108,92,231,0.4); }
+  .btn-green { background: linear-gradient(135deg, #00d68f, #00a06b); box-shadow: 0 8px 24px rgba(0,214,143,0.4); }
+  .btn-blue { background: linear-gradient(135deg, #0088ff, #00a0ff); box-shadow: 0 8px 24px rgba(0,136,255,0.4); }
+  .btn-heart { background: linear-gradient(135deg, #ff0044, #ff6699); box-shadow: 0 8px 24px rgba(255,0,68,0.4); }
+  .btn-play { background: linear-gradient(135deg, #00d68f, #00a06b); box-shadow: 0 8px 24px rgba(0,214,143,0.4); }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn-row .btn { flex: 1; min-width: 140px; }
+  .status {
+    padding: 12px 14px; border-radius: 10px; font-size: 13px;
+    margin-top: 12px; display: none; line-height: 1.5;
+  }
+  .status.active { display: block; }
+  .status.info { background: rgba(108,92,231,0.15); color: #a29bfe; border: 1px solid rgba(108,92,231,0.3); }
+  .status.ok { background: rgba(0,214,143,0.15); color: #00d68f; border: 1px solid rgba(0,214,143,0.3); }
+  .status.err { background: rgba(255,71,87,0.15); color: #ff4757; border: 1px solid rgba(255,71,87,0.3); }
+  .result { display: none; margin-top: 18px; }
+  .result.active { display: block; }
+  .result-box { background: #0f0f1a; border: 1px solid #00d68f; border-radius: 12px; padding: 16px; }
+  .result-label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; margin-top: 12px; }
+  .result-label:first-child { margin-top: 0; }
+  .result-value {
+    font-family: 'Consolas', monospace;
+    font-size: 13px; color: #00d68f;
+    word-break: break-all;
+    padding: 12px;
+    background: #0a0a14;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .result-value span { flex: 1; }
+  .copy-icon {
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.08);
+    font-size: 13px;
+    color: #a29bfe;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .copy-icon:hover { background: rgba(255,255,255,0.15); }
+  .qr-wrap { background: #fff; border-radius: 12px; padding: 16px; text-align: center; margin-top: 6px; }
+  .qr-wrap img { width: 100%; max-width: 220px; display: block; margin: 0 auto; }
+  .qr-hint { font-size: 12px; color: #666; text-align: center; margin-top: 10px; line-height: 1.5; }
+  .instructions {
+    background: rgba(108,92,231,0.1);
+    border: 1px solid rgba(108,92,231,0.3);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #b8b0ff;
+  }
+  .instructions .title { font-weight: 800; color: #fff; margin-bottom: 8px; font-size: 14px; }
+  .instructions b { color: #fff; }
+  .instructions ol { padding-left: 20px; margin: 6px 0; }
+  .instructions li { margin-bottom: 5px; }
+  .configs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .config-item {
+    background: #0f0f1a;
+    border: 2px solid #2a2a40;
+    border-radius: 12px;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    text-align: center;
+    position: relative;
+  }
+  .config-item:hover { border-color: #ff0044; transform: translateY(-2px); }
+  .config-item.selected { border-color: #00d68f; background: rgba(0,214,143,0.08); }
+  .config-item-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+    background-color: #1a1a2e;
+    margin-bottom: 8px;
+  }
+  .config-item-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .config-item-meta {
+    font-size: 10px;
+    color: #888;
+    margin-top: 4px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .config-item-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    justify-content: center;
+  }
+  .config-item-actions button {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: inherit;
+    font-weight: 700;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+  }
+  .config-item-actions button:hover { background: rgba(255,255,255,0.15); }
+  .config-item-actions button.danger { color: #ff4757; }
+  .hidden { display: none !important; }
+  .prank-header { display: flex; gap: 16px; align-items: center; }
+  .prank-thumb {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-color: #1a1a2e;
+    border: 1px solid #2a2a40;
+    flex-shrink: 0;
+  }
+  .prank-meta { flex: 1; min-width: 0; }
+  .prank-title { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+  .prank-id { font-family: 'Consolas', monospace; font-size: 12px; color: #666; }
+  .error-screen { display: none; text-align: center; padding: 60px 20px; }
+  .error-screen.active { display: block; }
+  .error-icon { font-size: 60px; margin-bottom: 20px; }
+  .error-title { font-size: 22px; font-weight: 800; margin-bottom: 10px; color: #ff4757; }
+  .error-text { font-size: 14px; color: #888; line-height: 1.6; }
+  .links-list { margin-top: 12px; }
+  .links-list a {
+    display: block;
+    padding: 10px 14px;
+    background: rgba(108,92,231,0.1);
+    border: 1px solid rgba(108,92,231,0.3);
+    border-radius: 10px;
+    color: #a29bfe;
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 6px;
+    text-align: center;
+    transition: 0.2s;
+  }
+  .links-list a:hover { background: rgba(108,92,231,0.2); border-color: #a29bfe; }
+
+  .my-tag-row {
+    display: flex; gap: 8px; margin-bottom: 8px; align-items: center;
+  }
+  .my-tag-info {
+    flex: 1; min-width: 0;
+    padding: 12px 14px;
+    background: #0f0f1a;
+    border: 1px solid #2a2a40;
+    border-radius: 10px;
+  }
+  .my-tag-title {
+    font-weight: 700; font-size: 14px;
+    word-break: break-word;
+    color: #fff;
+  }
+  .my-tag-id {
+    font-family: 'Consolas', monospace;
+    font-size: 11px; color: #666;
+    margin-top: 2px;
+  }
+  .my-tag-btn {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: none;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .my-tag-btn-admin { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
+  .my-tag-btn-prank { background: linear-gradient(135deg, #0088ff, #00a0ff); }
+  .my-tag-btn-del {
+    background: rgba(255,71,87,0.15);
+    color: #ff4757;
+    border: 1px solid rgba(255,71,87,0.3);
+  }
+  .my-tag-btn-del:hover { background: rgba(255,71,87,0.3); }
+  .my-tag-empty {
+    text-align: center;
+    padding: 16px 0;
+    color: #666;
+    font-size: 13px;
+  }
+
+  .config-hero {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    background-size: cover;
+    background-position: center;
+    background-color: #1a1a2e;
+    margin-bottom: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+  .config-title { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
+  .config-author { font-size: 13px; color: #888; margin-bottom: 16px; }
+  .config-desc { font-size: 14px; color: #c9d1d9; line-height: 1.6; margin-bottom: 16px; }
+  .config-likes-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .likes-count { font-size: 15px; font-weight: 800; color: #ff6699; }
+
+  body.prank-mode {
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  .bg-image {
+    position: fixed; inset: -60px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(40px) brightness(0.55);
+    transform: scale(1.15);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .bg-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .center-image {
+    position: relative;
+    z-index: 10;
+    width: 60vw;
+    max-width: 380px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-color: #1a1a2e;
+    cursor: pointer;
+    will-change: transform;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  }
+  .center-image.pressed { animation: pressBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  @keyframes pressBounce {
+    0% { transform: scale(1); }
+    25% { transform: scale(0.85); }
+    50% { transform: scale(1.15); }
+    75% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+  .mute-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    padding: 10px 22px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(0,0,0,0.4);
+    color: rgba(255,255,255,0.6);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .mute-btn.visible { opacity: 1; pointer-events: auto; }
+  .mute-btn:active { background: rgba(0,0,0,0.6); transform: translateX(-50%) scale(0.97); }
+  .hint-text {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 12px 20px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.4s;
+    max-width: 90%;
+    line-height: 1.5;
+    pointer-events: none;
+  }
+  .hint-text.visible { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- ===== ГЛАВНАЯ ===== -->
+<div id="homeScreen" class="hidden">
+  <div class="container">
+    <h1>🎭 tprank</h1>
+    <div class="sub">NFC-метки · админка · конфиги · детонатор</div>
+
+    <div class="card">
+      <h3>📱 Мои метки</h3>
+      <div id="myTagsList"></div>
+      <div id="myTagsEmpty" class="my-tag-empty">Пока нет авторизованных меток</div>
+      <a href="?mode=auth-tag" class="btn btn-secondary" style="margin-top:12px;">🔗 Авторизовать метку</a>
+    </div>
+
+    <div class="card">
+      <h3>📱 Метки</h3>
+      <a href="?mode=create" class="btn">✨ Создать метку</a>
+      <a href="?mode=open" class="btn btn-blue">📱 Открыть пранк-страницу</a>
+      <a href="?admin=true" class="btn btn-secondary">🔐 Войти в админку</a>
+    </div>
+
+    <div class="card">
+      <h3>🎨 Конфиги</h3>
+      <a href="?mode=configs" class="btn btn-purple">📚 Библиотека конфигов</a>
+      <a href="?mode=config-new" class="btn btn-green">➕ Новый конфиг</a>
+    </div>
+
+    <div class="card">
+      <h3>📚 Как это работает</h3>
+      <div class="instructions">
+        <ol>
+          <li><b>Создай метку</b> — получишь ID, пароль, ссылку и QR</li>
+          <li><b>Запиши ссылку</b> на NFC через NFC Tools</li>
+          <li><b>Приложи телефон</b> — откроется пранк-страница</li>
+          <li><b>Войди в админку</b> — выбери конфиг и жми «ДЕТОНИРОВАТЬ»</li>
+          <li><b>Звук включится</b> у всех, кто на метке</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ОТКРЫТЬ ПРАНК ПО ID ===== -->
+<div id="openScreen" class="hidden">
+  <div class="container">
+    <h1>📱 Открыть пранк</h1>
+    <div class="sub">tprank · введи ID метки — откроется пранк-страница</div>
+
+    <div class="card">
+      <label>ID метки</label>
+      <input type="text" id="openId" placeholder="abc123" maxlength="6">
+      <button class="btn btn-blue" id="openBtn" disabled>📱 Открыть пранк</button>
+      <div class="status" id="openStatus"></div>
+    </div>
+
+    <a href="?" class="btn btn-secondary">← На главную</a>
+  </div>
+</div>
+
+<!-- ===== АВТОРИЗАЦИЯ МЕТКИ ===== -->
+<div id="authTagScreen" class="hidden">
+  <div class="container">
+    <h1>🔗 Авторизовать метку</h1>
+    <div class="sub">tprank · введи ID и пароль — метка появится в списке</div>
+
+    <div class="card">
+      <label>ID метки</label>
+      <input type="text" id="authId" placeholder="abc123" maxlength="6">
+      <label>Пароль</label>
+      <input type="text" id="authPass" placeholder="x7k9m2">
+      <button class="btn" id="authBtn" disabled>🔓 Авторизовать</button>
+      <div class="status" id="authStatus"></div>
+    </div>
+
+    <a href="?" class="btn btn-secondary">← На главную</a>
+  </div>
+</div>
+
+<!-- ===== СОЗДАНИЕ МЕТКИ ===== -->
+<div id="createScreen" class="hidden">
+  <div class="container">
+    <h1>✨ Создать метку</h1>
+    <div class="sub">tprank · введи название — получишь NFC-метку</div>
+
+    <div class="card">
+      <h3>📝 Название метки</h3>
+      <input type="text" id="tagTitle" placeholder="Моя метка" maxlength="60">
+    </div>
+
+    <button class="btn" id="createBtn" disabled>🚀 Создать метку</button>
+    <div class="status" id="status"></div>
+
+    <div class="result" id="result">
+      <div class="result-box">
+        <div class="result-label">QR-код (ведёт на админку)</div>
+        <div class="qr-wrap"><img id="qrImage" src="" alt="QR"></div>
+        <div class="qr-hint">Отсканируй → откроется админка метки.</div>
+
+        <div class="result-label">ID метки</div>
+        <div class="result-value">
+          <span id="resultId"></span>
+          <span class="copy-icon" data-copy="resultId">📋</span>
+        </div>
+
+        <div class="result-label">Пароль</div>
+        <div class="result-value">
+          <span id="resultPass"></span>
+          <span class="copy-icon" data-copy="resultPass">📋</span>
+        </div>
+
+        <div class="result-label">🔗 Ссылка для NFC-метки</div>
+        <div class="result-value">
+          <span id="resultUrl"></span>
+          <span class="copy-icon" data-copy="resultUrl">📋</span>
+        </div>
+
+        <div class="result-label">🔐 Ссылка для админки</div>
+        <div class="result-value">
+          <span id="resultManage"></span>
+          <span class="copy-icon" data-copy="resultManage">📋</span>
+        </div>
+
+        <div class="instructions">
+          <div class="title">Как записать на NFC-метку</div>
+          <ol>
+            <li>Скачай <b>NFC Tools</b> (Android/iOS)</li>
+            <li>Открой → <b>WRITE</b> → <b>Add a record</b> → <b>URL</b></li>
+            <li>Вставь <b>ссылку для NFC-метки</b></li>
+            <li>Нажми <b>Write</b> → приложи метку</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <a href="?" class="btn btn-secondary">← На главную</a>
+  </div>
+</div>
+
+<!-- ===== ЛОГИН ===== -->
+<div id="loginScreen" class="hidden">
+  <div class="container">
+    <h1>🔐 Вход в админку</h1>
+    <div class="sub">tprank · введи ID метки и пароль</div>
+
+    <div class="card">
+      <label>ID метки</label>
+      <input type="text" id="loginId" placeholder="abc123" maxlength="6">
+      <label>Пароль</label>
+      <input type="text" id="loginPass" placeholder="x7k9m2">
+      <button class="btn" id="loginBtn" disabled>🔓 Войти</button>
+    </div>
+
+    <a href="?" class="btn btn-secondary">← На главную</a>
+  </div>
+</div>
+
+<!-- ===== ОШИБКА ===== -->
+<div id="errorScreen" class="error-screen">
+  <div class="container">
+    <div class="error-icon">❌</div>
+    <div class="error-title" id="errorTitle">Ошибка</div>
+    <div class="error-text" id="errorText">—</div>
+    <a href="?" class="btn btn-secondary" style="margin-top:30px;">← На главную</a>
+  </div>
+</div>
+
+<!-- ===== АДМИНКА МЕТКИ ===== -->
+<div id="manageScreen" class="hidden">
+  <div class="container">
+    <h1>⚙️ Управление меткой</h1>
+    <div class="sub">ID: <span id="tagIdDisplay" style="color:#00d68f;font-family:Consolas,monospace;"></span></div>
+
+    <div class="card">
+      <h3>📌 Текущая метка</h3>
+      <div class="prank-header">
+        <div class="prank-thumb" id="currentThumb"></div>
+        <div class="prank-meta">
+          <div class="prank-title" id="currentTitle">—</div>
+          <div class="prank-id" id="currentConfig">Конфиг: —</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎨 Хаб конфигов</h3>
+      <div id="configsList">Загрузка...</div>
+      <button class="btn" id="applyBtn" disabled>✅ Применить выбранный</button>
+    </div>
+
+    <div class="card">
+      <h3>➕ Создать конфиг из метки</h3>
+      <label>Название конфига</label>
+      <input type="text" id="newConfigName" placeholder="Пукан" maxlength="40">
+      <label>Описание</label>
+      <textarea id="newConfigDesc" placeholder="Описание конфига..."></textarea>
+      <label>Автор</label>
+      <input type="text" id="newConfigAuthor" placeholder="Аноним" maxlength="40">
+      <label>Картинка (URL)</label>
+      <input type="text" id="newConfigImage" placeholder="https://.../image.jpg">
+      <label>Звук (URL mp3)</label>
+      <input type="text" id="newConfigSound" placeholder="https://.../sound.mp3">
+      <div class="btn-row">
+        <button class="btn btn-green" id="publishBtn" disabled>📤 Опубликовать</button>
+        <button class="btn btn-secondary" id="applyOnlyBtn" disabled>💾 Только к метке</button>
+      </div>
+      <div class="status" id="newConfigStatus"></div>
+    </div>
+
+    <div class="card">
+      <h3>⚙️ Режим работы (опционально)</h3>
+      <div class="checkbox-row">
+        <input type="checkbox" id="detonateMode">
+        <span>Ждать детонации</span>
+      </div>
+      <div class="checkbox-hint">
+        <b>Выключено (по умолчанию):</b> звук играет сразу после клика.<br>
+        <b>Включено (по желанию):</b> звук ждёт кнопки «ДЕТОНИРОВАТЬ».
+      </div>
+    </div>
+
+    <div class="card hidden" id="detonatorCard">
+      <h3>🔴 Детонатор</h3>
+      <button class="btn btn-danger" id="detonateBtn">🔴 ДЕТОНИРОВАТЬ</button>
+      <button class="btn btn-secondary" id="cancelDetonateBtn">⏹ Отменить детонацию</button>
+      <div class="status" id="detonateStatus"></div>
+    </div>
+
+    <div class="card">
+      <h3>🔗 Ссылки</h3>
+      <div class="links-list">
+        <a id="nfcLink" href="#" target="_blank">📱 Открыть пранк-страницу</a>
+        <a id="manageLink" href="#" target="_blank">🔐 Открыть админку с паролем</a>
+      </div>
+    </div>
+
+    <a href="?" class="btn btn-secondary">← На главную</a>
+  </div>
+</div>
+
+<!-- ===== БИБЛИОТЕКА КОНФИГОВ ===== -->
+<div id="configsScreen" class="hidden">
+  <div class="container">
+    <h1>🎨 Библиотека конфигов</h1>
+    <div class="sub">tprank · готовые пары «картинка + звук»</div>
+
+    <div class="card">
+      <h3>➕ Добавить конфиг</h3>
+      <a href="?mode=config-new" class="btn btn-green">➕ Новый конфиг</a>
+    </div>
+
+    <div class="card">
+      <h3>📚 Существующие конфиги</h3>
+      <div id="allConfigsList">Загрузка...</div>
+    </div>
+
+    <a href="?" class="btn btn-secondary">← На главную</a>
+  </div>
+</div>
+
+<!-- ===== СТРАНИЦА КОНФИГА ===== -->
+<div id="configScreen" class="hidden">
+  <div class="container">
+    <div class="config-hero" id="cfgHero"></div>
+    <div class="config-title" id="cfgTitle">—</div>
+    <div class="config-author" id="cfgAuthor">—</div>
+    <div class="config-desc" id="cfgDesc">—</div>
+
+    <div class="card">
+      <div class="config-likes-row">
+        <button class="btn btn-heart" id="likeBtn" style="flex:1;margin-top:0;">❤️ Лайкнуть</button>
+        <div class="likes-count" id="likesCount">0</div>
+      </div>
+    </div>
+
+    <button class="btn btn-play" id="playBtn">▶️ Прослушать</button>
+
+    <div class="card" style="margin-top:18px;">
+      <h3>📱 Применить к моей метке</h3>
+      <label>Выбери метку</label>
+      <select id="myTagsSelect"></select>
+      <button class="btn" id="applyToTagBtn" disabled>✅ Применить</button>
+      <div class="status" id="applyToTagStatus"></div>
+    </div>
+
+    <a href="?mode=configs" class="btn btn-secondary">← К конфигам</a>
+  </div>
+</div>
+
+<!-- ===== СОЗДАНИЕ/РЕДАКТИРОВАНИЕ КОНФИГА ===== -->
+<div id="configEditScreen" class="hidden">
+  <div class="container">
+    <h1 id="configEditTitle">➕ Новый конфиг</h1>
+    <div class="sub">tprank · название, картинка, звук</div>
+
+    <div class="card">
+      <h3>📝 Название конфига</h3>
+      <input type="text" id="configName" placeholder="Пукан" maxlength="40">
+    </div>
+
+    <div class="card">
+      <h3>📄 Описание</h3>
+      <textarea id="configDescription" placeholder="Что это за конфиг..."></textarea>
+    </div>
+
+    <div class="card">
+      <h3>👤 Автор</h3>
+      <input type="text" id="configAuthor" placeholder="Аноним" maxlength="40">
+    </div>
+
+    <div class="card">
+      <h3>🖼 Ссылка на картинку</h3>
+      <input type="text" id="configImage" placeholder="https://.../image.jpg">
+    </div>
+
+    <div class="card">
+      <h3>🎵 Ссылка на звук (mp3)</h3>
+      <input type="text" id="configSound" placeholder="https://.../sound.mp3">
+    </div>
+
+    <div class="card">
+      <h3>🆔 ID конфига</h3>
+      <label>Латиница, без пробелов</label>
+      <input type="text" id="configId" placeholder="fart">
+      <button class="btn btn-secondary" id="genConfigId">🎲 Случайный ID</button>
+    </div>
+
+    <button class="btn btn-green" id="saveConfigBtn" disabled>💾 Сохранить конфиг</button>
+    <div class="status" id="configStatus"></div>
+
+    <a href="?mode=configs" class="btn btn-secondary">← К конфигам</a>
+  </div>
+</div>
+
+<!-- ===== ПРАНК-СТРАНИЦА ===== -->
+<div id="prankScreen" class="hidden">
+  <div class="bg-image" id="bgImage"></div>
+  <div class="bg-overlay"></div>
+  <div class="center-image" id="centerImage"></div>
+  <button class="mute-btn" id="muteBtn">🔇 Заглушить</button>
+  <div class="hint-text" id="hintText">
+    👆 Переключись на другую вкладку, не закрывай эту — звук включится сам.
+  </div>
+  <audio id="audioEl" loop></audio>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script>
+(function() {
+  const firebaseConfig = {
+    apiKey: "AIzaSyDGb-vDdeM3vbACbIqQ_Yy4Yom6vsQdViY",
+    authDomain: "unogame-9414d.firebaseapp.com",
+    databaseURL: "https://unogame-9414d-default-rtdb.firebaseio.com",
+    projectId: "unogame-9414d",
+    storageBucket: "unogame-9414d.firebasestorage.app",
+    messagingSenderId: "609200346253",
+    appId: "1:609200346253:web:4ca96722ecad9ea0cffec4"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  async function sha256(str) {
+    const buf = new TextEncoder().encode(str);
+    const hash = await crypto.subtle.digest('SHA-256', buf);
+    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  function makeId() {
+    const l = 'abcdefghijklmnopqrstuvwxyz';
+    const d = '0123456789';
+    let id = '';
+    for (let i = 0; i < 3; i++) id += l[Math.floor(Math.random() * l.length)];
+    for (let i = 0; i < 3; i++) id += d[Math.floor(Math.random() * d.length)];
+    return id;
+  }
+  function makePass() {
+    const c = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let p = '';
+    for (let i = 0; i < 6; i++) p += c[Math.floor(Math.random() * c.length)];
+    return p;
+  }
+  function makeConfigId() {
+    const c = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let id = '';
+    for (let i = 0; i < 6; i++) id += c[Math.floor(Math.random() * c.length)];
+    return id;
+  }
+  function getUserId() {
+    let uid = localStorage.getItem('tprank_userId');
+    if (!uid) {
+      uid = 'u_' + Math.random().toString(36).slice(2, 12);
+      localStorage.setItem('tprank_userId', uid);
+    }
+    return uid;
+  }
+  function getMyTags() {
+    return JSON.parse(localStorage.getItem('myTags') || '[]');
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const urlId = params.get('id');
+  const urlPass = params.get('pass');
+  const urlMode = params.get('mode');
+  const urlCid = params.get('cid');
+  const urlAdmin = params.get('admin');
+
+  const screens = {
+    home: document.getElementById('homeScreen'),
+    open: document.getElementById('openScreen'),
+    authTag: document.getElementById('authTagScreen'),
+    create: document.getElementById('createScreen'),
+    login: document.getElementById('loginScreen'),
+    error: document.getElementById('errorScreen'),
+    manage: document.getElementById('manageScreen'),
+    configs: document.getElementById('configsScreen'),
+    config: document.getElementById('configScreen'),
+    configEdit: document.getElementById('configEditScreen'),
+    prank: document.getElementById('prankScreen')
+  };
+
+  function showScreen(name) {
+    Object.keys(screens).forEach(k => screens[k].classList.add('hidden'));
+    screens[name].classList.remove('hidden');
+  }
+
+  function renderMyTags() {
+    const myTags = getMyTags();
+    const list = document.getElementById('myTagsList');
+    const empty = document.getElementById('myTagsEmpty');
+
+    if (!myTags.length) {
+      list.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+
+    empty.style.display = 'none';
+
+    list.innerHTML = myTags.map(t => `
+      <div class="my-tag-row">
+        <div class="my-tag-info">
+          <div class="my-tag-title">${t.title || 'Без названия'}</div>
+          <div class="my-tag-id">ID: ${t.id}</div>
+        </div>
+        <a href="?admin=true&id=${t.id}&pass=${t.pass}" class="my-tag-btn my-tag-btn-admin" title="Открыть админку">⚙️</a>
+        <a href="?admin=false&id=${t.id}" class="my-tag-btn my-tag-btn-prank" title="Открыть пранк">📱</a>
+        <button onclick="removeMyTag('${t.id}')" class="my-tag-btn my-tag-btn-del" title="Убрать из списка">🗑</button>
+      </div>
+    `).join('');
+  }
+
+  window.removeMyTag = function(id) {
+    if (!confirm('Убрать метку из списка? (Сама метка в Firebase останется)')) return;
+    let myTags = getMyTags();
+    myTags = myTags.filter(t => t.id !== id);
+    localStorage.setItem('myTags', JSON.stringify(myTags));
+    renderMyTags();
+  };
+
+  // admin=true → админка/логин
+  if (urlAdmin === 'true') {
+    if (urlId && urlPass) { showScreen('manage'); startManageMode(urlId, urlPass); return; }
+    if (urlId && !urlPass) { showScreen('login'); startOnlyPasswordMode(urlId); return; }
+    showScreen('login'); startLoginMode(); return;
+  }
+
+  // admin=false + id → пранк
+  if (urlAdmin === 'false' && urlId) {
+    document.body.classList.add('prank-mode');
+    showScreen('prank');
+    startPrankMode(urlId);
+    return;
+  }
+
+  // id без admin → пранк по умолчанию
+  if (urlId && !urlAdmin && !urlMode && !urlPass) {
+    document.body.classList.add('prank-mode');
+    showScreen('prank');
+    startPrankMode(urlId);
+    return;
+  }
+
+  // pass без id → ошибка
+  if (urlPass && !urlAdmin && !urlMode) {
+    showScreen('error');
+    document.getElementById('errorTitle').textContent = 'ID не указан';
+    document.getElementById('errorText').textContent = 'В ссылке есть пароль, но нет ID метки.';
+    return;
+  }
+
+  // ГЛАВНАЯ
+  if (!urlId && !urlPass && !urlMode && !urlCid && !urlAdmin) {
+    showScreen('home');
+    renderMyTags();
+    return;
+  }
+
+  // АВТОРИЗАЦИЯ МЕТКИ
+  if (urlMode === 'auth-tag') {
+    showScreen('authTag');
+    const authId = document.getElementById('authId');
+    const authPass = document.getElementById('authPass');
+    const authBtn = document.getElementById('authBtn');
+    const authStatus = document.getElementById('authStatus');
+
+    function checkAuthReady() {
+      authBtn.disabled = !(authId.value.trim().length === 6 && authPass.value.trim());
+    }
+    authId.addEventListener('input', () => {
+      authId.value = authId.value.toLowerCase().replace(/[^a-z0-9]/g, '');
+      checkAuthReady();
+    });
+    authPass.addEventListener('input', checkAuthReady);
+
+    authBtn.addEventListener('click', async () => {
+      const id = authId.value.trim();
+      const pass = authPass.value.trim();
+      if (!id || !pass) return;
+
+      authBtn.disabled = true;
+      authStatus.className = 'status active info';
+      authStatus.textContent = '⏳ Проверяю...';
+
+      try {
+        const snap = await db.ref('custom_pranks/' + id).once('value');
+        if (!snap.exists()) {
+          authStatus.className = 'status active err';
+          authStatus.textContent = '❌ Метка с таким ID не найдена';
+          authBtn.disabled = false;
+          return;
+        }
+
+        const prank = snap.val();
+        if (prank.auth && prank.auth.passHash) {
+          const inputHash = await sha256(pass);
+          if (inputHash !== prank.auth.passHash) {
+            authStatus.className = 'status active err';
+            authStatus.textContent = '❌ Неверный пароль';
+            authBtn.disabled = false;
+            return;
+          }
+        }
+
+        const myTags = getMyTags();
+        const existing = myTags.findIndex(t => t.id === id);
+        if (existing >= 0) {
+          myTags[existing] = { id, title: prank.title || 'Моя метка', pass };
+        } else {
+          myTags.push({ id, title: prank.title || 'Моя метка', pass });
+        }
+        localStorage.setItem('myTags', JSON.stringify(myTags));
+
+        authStatus.className = 'status active ok';
+        authStatus.textContent = '✅ Метка авторизована! Переход на главную...';
+
+        setTimeout(() => {
+          window.location.href = window.location.origin + window.location.pathname;
+        }, 800);
+      } catch (e) {
+        authStatus.className = 'status active err';
+        authStatus.textContent = '❌ Ошибка: ' + e.message;
+        authBtn.disabled = false;
+      }
+    });
+
+    authPass.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !authBtn.disabled) authBtn.click();
+    });
+    return;
+  }
+
+  // ОТКРЫТЬ ПРАНК (mode=open)
+  if (urlMode === 'open') {
+    showScreen('open');
+    const openId = document.getElementById('openId');
+    const openBtn = document.getElementById('openBtn');
+    const openStatus = document.getElementById('openStatus');
+
+    openId.addEventListener('input', () => {
+      openId.value = openId.value.toLowerCase().replace(/[^a-z0-9]/g, '');
+      openBtn.disabled = openId.value.trim().length !== 6;
+    });
+
+    openBtn.addEventListener('click', async () => {
+      const id = openId.value.trim();
+      if (!id) return;
+      openBtn.disabled = true;
+      openStatus.className = 'status active info';
+      openStatus.textContent = '⏳ Проверяю...';
+      try {
+        const snap = await db.ref('custom_pranks/' + id).once('value');
+        if (!snap.exists()) {
+          openStatus.className = 'status active err';
+          openStatus.textContent = '❌ Метка не найдена';
+          openBtn.disabled = false;
+          return;
+        }
+        window.location.href = window.location.origin + window.location.pathname + '?admin=false&id=' + id;
+      } catch (e) {
+        openStatus.className = 'status active err';
+        openStatus.textContent = '❌ Ошибка: ' + e.message;
+        openBtn.disabled = false;
+      }
+    });
+    return;
+  }
+
+  // СОЗДАНИЕ МЕТКИ
+  if (urlMode === 'create') {
+    showScreen('create');
+    const titleEl = document.getElementById('tagTitle');
+    const createBtn = document.getElementById('createBtn');
+    const statusEl = document.getElementById('status');
+    const resultEl = document.getElementById('result');
+
+    titleEl.addEventListener('input', () => {
+      createBtn.disabled = !titleEl.value.trim();
+    });
+
+    createBtn.addEventListener('click', async () => {
+      const title = titleEl.value.trim();
+      if (!title) return;
+      createBtn.disabled = true;
+      statusEl.className = 'status active info';
+      statusEl.textContent = '⏳ Создаю метку...';
+      try {
+        const id = makeId();
+        const pass = makePass();
+        const passHash = await sha256(pass);
+        await db.ref('custom_pranks/' + id).set({
+          title, image: '', sound: '', configId: '',
+          armed: false, detonate: false, waitDetonate: false,
+          auth: { passHash }, createdAt: Date.now()
+        });
+        const myTags = getMyTags();
+        myTags.push({ id, title, pass });
+        localStorage.setItem('myTags', JSON.stringify(myTags));
+
+        const baseUrl = window.location.origin + window.location.pathname;
+        const nfcUrl = baseUrl + '?admin=false&id=' + id;
+        const manageUrl = baseUrl + '?admin=true&id=' + id + '&pass=' + pass;
+        const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(manageUrl);
+
+        document.getElementById('resultId').textContent = id;
+        document.getElementById('resultPass').textContent = pass;
+        document.getElementById('resultUrl').textContent = nfcUrl;
+        document.getElementById('resultManage').textContent = manageUrl;
+        document.getElementById('qrImage').src = qrUrl;
+        resultEl.classList.add('active');
+        statusEl.className = 'status active ok';
+        statusEl.textContent = '✅ Метка создана!';
+        titleEl.value = '';
+        createBtn.disabled = true;
+      } catch (e) {
+        statusEl.className = 'status active err';
+        statusEl.textContent = '❌ Ошибка: ' + e.message;
+        createBtn.disabled = false;
+      }
+    });
+
+    document.querySelectorAll('.copy-icon').forEach(icon => {
+      icon.addEventListener('click', () => {
+        const text = document.getElementById(icon.dataset.copy).textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          const old = icon.textContent;
+          icon.textContent = '✅';
+          setTimeout(() => icon.textContent = old, 1500);
+        });
+      });
+    });
+    return;
+  }
+
+  // БИБЛИОТЕКА КОНФИГОВ
+  if (urlMode === 'configs') {
+    showScreen('configs');
+    const list = document.getElementById('allConfigsList');
+    db.ref('configs').on('value', snap => {
+      const data = snap.val() || {};
+      const keys = Object.keys(data);
+      if (!keys.length) {
+        list.innerHTML = '<div style="color:#666;padding:20px;text-align:center;">Конфигов пока нет</div>';
+        return;
+      }
+      list.innerHTML = '<div class="configs-grid">' + keys.map(k => {
+        const c = data[k];
+        const likesCount = c.likes ? Object.keys(c.likes).length : 0;
+        return `<div class="config-item" onclick="window.location.href='?mode=config&cid=${k}'">
+          <div class="config-item-img" style="background-image:url('${c.image || ''}')"></div>
+          <div class="config-item-name">${c.name || k}</div>
+          <div class="config-item-meta"><span>❤️ ${likesCount}</span></div>
+          <div class="config-item-actions">
+            <button onclick="event.stopPropagation();window.location.href='?mode=config-edit&cid=${k}'">✏️</button>
+            <button class="danger" onclick="event.stopPropagation();deleteConfig('${k}')">🗑</button>
+          </div>
+        </div>`;
+      }).join('') + '</div>';
+    });
+
+    window.deleteConfig = function(cid) {
+      if (confirm('Удалить конфиг "' + cid + '"?')) {
+        db.ref('configs/' + cid).remove();
+      }
+    };
+    return;
+  }
+
+  // СТРАНИЦА КОНФИГА
+  if (urlMode === 'config' && urlCid) {
+    showScreen('config');
+    const hero = document.getElementById('cfgHero');
+    const titleEl = document.getElementById('cfgTitle');
+    const authorEl = document.getElementById('cfgAuthor');
+    const descEl = document.getElementById('cfgDesc');
+    const likeBtn = document.getElementById('likeBtn');
+    const likesCountEl = document.getElementById('likesCount');
+    const playBtn = document.getElementById('playBtn');
+    const selectEl = document.getElementById('myTagsSelect');
+    const applyBtn = document.getElementById('applyToTagBtn');
+    const applyStatus = document.getElementById('applyToTagStatus');
+
+    let cfgData = null;
+    let audio = new Audio();
+    let playing = false;
+
+    db.ref('configs/' + urlCid).on('value', snap => {
+      if (!snap.exists()) {
+        showScreen('error');
+        document.getElementById('errorTitle').textContent = 'Конфиг не найден';
+        return;
+      }
+      cfgData = snap.val();
+      hero.style.backgroundImage = cfgData.image ? `url('${cfgData.image}')` : 'none';
+      titleEl.textContent = cfgData.name || urlCid;
+      authorEl.textContent = '👤 ' + (cfgData.author || 'Аноним');
+      descEl.textContent = cfgData.description || 'Без описания';
+
+      const likesCount = cfgData.likes ? Object.keys(cfgData.likes).length : 0;
+      likesCountEl.textContent = likesCount;
+
+      const uid = getUserId();
+      const liked = cfgData.likes && cfgData.likes[uid];
+      likeBtn.textContent = liked ? '❤️ Уже лайкнуто' : '❤️ Лайкнуть';
+    });
+
+    likeBtn.addEventListener('click', async () => {
+      const uid = getUserId();
+      const snap = await db.ref('configs/' + urlCid + '/likes/' + uid).once('value');
+      if (snap.exists()) {
+        await db.ref('configs/' + urlCid + '/likes/' + uid).remove();
+      } else {
+        await db.ref('configs/' + urlCid + '/likes/' + uid).set(true);
+      }
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (!cfgData || !cfgData.sound) return;
+      if (playing) {
+        audio.pause();
+        audio.currentTime = 0;
+        playing = false;
+        playBtn.textContent = '▶️ Прослушать';
+      } else {
+        audio.src = cfgData.sound;
+        audio.play().catch(() => {});
+        playing = true;
+        playBtn.textContent = '⏸ Пауза';
+        audio.onended = () => {
+          playing = false;
+          playBtn.textContent = '▶️ Прослушать';
+        };
+      }
+    });
+
+    const myTags = getMyTags();
+    const opts = ['<option value="">— выбери метку —</option>'];
+    myTags.forEach(t => {
+      opts.push(`<option value="${t.id}">${t.title} (${t.id})</option>`);
+    });
+    selectEl.innerHTML = opts.join('');
+
+    selectEl.addEventListener('change', () => {
+      applyBtn.disabled = !selectEl.value;
+    });
+
+    applyBtn.addEventListener('click', async () => {
+      const tagId = selectEl.value;
+      if (!tagId || !cfgData) return;
+      applyBtn.disabled = true;
+      applyStatus.className = 'status active info';
+      applyStatus.textContent = '⏳ Применяю...';
+      try {
+        await db.ref('custom_pranks/' + tagId).update({
+          image: cfgData.image || '',
+          sound: cfgData.sound || '',
+          configId: urlCid
+        });
+        applyStatus.className = 'status active ok';
+        applyStatus.textContent = '✅ Конфиг применён к метке ' + tagId;
+      } catch (e) {
+        applyStatus.className = 'status active err';
+        applyStatus.textContent = '❌ Ошибка: ' + e.message;
+      } finally {
+        applyBtn.disabled = false;
+      }
+    });
+    return;
+  }
+
+  // СОЗДАНИЕ/РЕДАКТИРОВАНИЕ КОНФИГА
+  if (urlMode === 'config-new' || urlMode === 'config-edit') {
+    showScreen('configEdit');
+    const nameEl = document.getElementById('configName');
+    const descEl = document.getElementById('configDescription');
+    const authorEl = document.getElementById('configAuthor');
+    const imageEl = document.getElementById('configImage');
+    const soundEl = document.getElementById('configSound');
+    const idEl = document.getElementById('configId');
+    const saveBtn = document.getElementById('saveConfigBtn');
+    const statusEl = document.getElementById('configStatus');
+    const titleEl = document.getElementById('configEditTitle');
+    const genIdBtn = document.getElementById('genConfigId');
+
+    genIdBtn.addEventListener('click', () => {
+      idEl.value = makeConfigId();
+      checkReady();
+    });
+
+    function checkReady() {
+      saveBtn.disabled = !(nameEl.value.trim() && idEl.value.trim());
+    }
+    nameEl.addEventListener('input', checkReady);
+    idEl.addEventListener('input', () => {
+      idEl.value = idEl.value.toLowerCase().replace(/[^a-z0-9_-]/g, '');
+      checkReady();
+    });
+
+    if (urlMode === 'config-edit' && urlCid) {
+      titleEl.textContent = '✏️ Редактировать конфиг';
+      idEl.value = urlCid;
+      idEl.disabled = true;
+      db.ref('configs/' + urlCid).once('value').then(snap => {
+        if (snap.exists()) {
+          const c = snap.val();
+          nameEl.value = c.name || '';
+          descEl.value = c.description || '';
+          authorEl.value = c.author || '';
+          imageEl.value = c.image || '';
+          soundEl.value = c.sound || '';
+        }
+        checkReady();
+      });
+    }
+
+    saveBtn.addEventListener('click', async () => {
+      const name = nameEl.value.trim();
+      const description = descEl.value.trim();
+      const author = authorEl.value.trim() || 'Аноним';
+      const image = imageEl.value.trim();
+      const sound = soundEl.value.trim();
+      const cid = idEl.value.trim();
+      if (!name || !cid) return;
+
+      saveBtn.disabled = true;
+      statusEl.className = 'status active info';
+      statusEl.textContent = '⏳ Сохраняю...';
+
+      try {
+        const existing = await db.ref('configs/' + cid).once('value');
+        const oldData = existing.exists() ? existing.val() : {};
+        const data = {
+          name, description, author, image, sound,
+          createdAt: oldData.createdAt || Date.now(),
+          likes: oldData.likes || {}
+        };
+        await db.ref('configs/' + cid).set(data);
+        statusEl.className = 'status active ok';
+        statusEl.textContent = '✅ Конфиг сохранён!';
+        setTimeout(() => {
+          window.location.href = '?mode=config&cid=' + cid;
+        }, 800);
+      } catch (e) {
+        statusEl.className = 'status active err';
+        statusEl.textContent = '❌ Ошибка: ' + e.message;
+        saveBtn.disabled = false;
+      }
+    });
+    return;
+  }
+
+  // ЛОГИН
+  function startLoginMode() {
+    const loginId = document.getElementById('loginId');
+    const loginPass = document.getElementById('loginPass');
+    const loginBtn = document.getElementById('loginBtn');
+
+    function check() {
+      loginBtn.disabled = !(loginId.value.trim() && loginPass.value.trim());
+    }
+    loginId.addEventListener('input', () => {
+      loginId.value = loginId.value.toLowerCase().replace(/[^a-z0-9]/g, '');
+      check();
+    });
+    loginPass.addEventListener('input', check);
+
+    loginBtn.addEventListener('click', () => {
+      const id = loginId.value.trim();
+      const pass = loginPass.value.trim();
+      if (!id || !pass) return;
+      window.location.href = '?admin=true&id=' + id + '&pass=' + pass;
+    });
+
+    loginPass.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') loginBtn.click();
+    });
+  }
+
+  // ТОЛЬКО ПАРОЛЬ
+  function startOnlyPasswordMode(id) {
+    const loginId = document.getElementById('loginId');
+    const loginPass = document.getElementById('loginPass');
+    const loginBtn = document.getElementById('loginBtn');
+    loginId.value = id;
+    loginId.disabled = true;
+    setTimeout(() => loginPass.focus(), 100);
+
+    loginPass.addEventListener('input', () => {
+      loginBtn.disabled = !loginPass.value.trim();
+    });
+    loginBtn.addEventListener('click', () => {
+      const pass = loginPass.value.trim();
+      if (!pass) return;
+      window.location.href = '?admin=true&id=' + id + '&pass=' + pass;
+    });
+    loginPass.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') loginBtn.click();
+    });
+  }
+
+  // АДМИНКА МЕТКИ
+  function startManageMode(id, pass) {
+    const els = {
+      tagIdDisplay: document.getElementById('tagIdDisplay'),
+      currentThumb: document.getElementById('currentThumb'),
+      currentTitle: document.getElementById('currentTitle'),
+      currentConfig: document.getElementById('currentConfig'),
+      configsList: document.getElementById('configsList'),
+      applyBtn: document.getElementById('applyBtn'),
+      detonateBtn: document.getElementById('detonateBtn'),
+      cancelDetonateBtn: document.getElementById('cancelDetonateBtn'),
+      detonateStatus: document.getElementById('detonateStatus'),
+      detonateMode: document.getElementById('detonateMode'),
+      detonatorCard: document.getElementById('detonatorCard'),
+      nfcLink: document.getElementById('nfcLink'),
+      manageLink: document.getElementById('manageLink'),
+      newName: document.getElementById('newConfigName'),
+      newDesc: document.getElementById('newConfigDesc'),
+      newAuthor: document.getElementById('newConfigAuthor'),
+      newImage: document.getElementById('newConfigImage'),
+      newSound: document.getElementById('newConfigSound'),
+      publishBtn: document.getElementById('publishBtn'),
+      applyOnlyBtn: document.getElementById('applyOnlyBtn'),
+      newStatus: document.getElementById('newConfigStatus')
+    };
+
+    let currentPrank = null;
+    let allConfigs = {};
+    let selectedConfigId = null;
+
+    function showError(title, text) {
+      showScreen('error');
+      document.getElementById('errorTitle').textContent = title;
+      document.getElementById('errorText').textContent = text;
+    }
+
+    async function checkAuth() {
+      try {
+        const snap = await db.ref('custom_pranks/' + id).once('value');
+        if (!snap.exists()) { showError('Метка не найдена', 'ID ' + id + ' не существует'); return; }
+        currentPrank = snap.val();
+
+        if (currentPrank.auth && currentPrank.auth.passHash) {
+          const inputHash = await sha256(pass);
+          if (inputHash !== currentPrank.auth.passHash) {
+            showError('Неверный пароль', 'Пароль не совпадает.');
+            return;
+          }
+        }
+
+        els.tagIdDisplay.textContent = id;
+        els.currentThumb.style.backgroundImage = currentPrank.image ? `url('${currentPrank.image}')` : 'none';
+        els.currentTitle.textContent = currentPrank.title || id;
+        els.currentConfig.textContent = 'Конфиг: ' + (currentPrank.configId || 'кастомный');
+
+        els.detonateMode.checked = !!currentPrank.waitDetonate;
+        updateDetonatorVisibility();
+
+        els.newName.value = currentPrank.title || '';
+        els.newImage.value = currentPrank.image || '';
+        els.newSound.value = currentPrank.sound || '';
+        els.newAuthor.value = localStorage.getItem('tprank_username') || 'Аноним';
+        checkNewConfigReady();
+
+        const baseUrl = window.location.origin + window.location.pathname;
+        els.nfcLink.href = baseUrl + '?admin=false&id=' + id;
+        els.manageLink.href = baseUrl + '?admin=true&id=' + id + '&pass=' + pass;
+
+        loadConfigs();
+      } catch (e) {
+        showError('Ошибка', e.message);
+      }
+    }
+
+    function updateDetonatorVisibility() {
+      if (els.detonateMode.checked) els.detonatorCard.classList.remove('hidden');
+      else els.detonatorCard.classList.add('hidden');
+    }
+
+    els.detonateMode.addEventListener('change', async () => {
+      updateDetonatorVisibility();
+      try { await db.ref('custom_pranks/' + id).update({ waitDetonate: els.detonateMode.checked }); }
+      catch (e) { alert('Ошибка: ' + e.message); }
+    });
+
+    function loadConfigs() {
+      db.ref('configs').on('value', snap => {
+        allConfigs = snap.val() || {};
+        const keys = Object.keys(allConfigs);
+        if (!keys.length) {
+          els.configsList.innerHTML = '<div style="color:#666;padding:20px;text-align:center;">Конфигов пока нет</div>';
+          return;
+        }
+        els.configsList.innerHTML = '<div class="configs-grid">' + keys.map(k => {
+          const c = allConfigs[k];
+          const selected = (currentPrank.configId === k) ? 'selected' : '';
+          const likesCount = c.likes ? Object.keys(c.likes).length : 0;
+          return `<div class="config-item ${selected}" data-id="${k}">
+            <div class="config-item-img" style="background-image:url('${c.image || ''}')"></div>
+            <div class="config-item-name">${c.name || k}</div>
+            <div class="config-item-meta"><span>❤️ ${likesCount}</span></div>
+          </div>`;
+        }).join('') + '</div>';
+
+        els.configsList.querySelectorAll('.config-item').forEach(item => {
+          item.addEventListener('click', () => {
+            els.configsList.querySelectorAll('.config-item').forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            selectedConfigId = item.dataset.id;
+            els.applyBtn.disabled = false;
+          });
+        });
+      });
+    }
+
+    els.applyBtn.addEventListener('click', async () => {
+      if (!selectedConfigId) return;
+      const c = allConfigs[selectedConfigId];
+      if (!c) return;
+      els.applyBtn.disabled = true;
+      els.applyBtn.textContent = '⏳ Применяю...';
+      try {
+        await db.ref('custom_pranks/' + id).update({
+          image: c.image || '', sound: c.sound || '', configId: selectedConfigId
+        });
+        els.currentThumb.style.backgroundImage = `url('${c.image}')`;
+        els.currentConfig.textContent = 'Конфиг: ' + selectedConfigId;
+        els.applyBtn.textContent = '✅ Применено!';
+        setTimeout(() => { els.applyBtn.textContent = '✅ Применить выбранный'; }, 2000);
+      } catch (e) {
+        alert('Ошибка: ' + e.message);
+        els.applyBtn.disabled = false;
+        els.applyBtn.textContent = '✅ Применить выбранный';
+      }
+    });
+
+    function checkNewConfigReady() {
+      const ok = els.newName.value.trim() && els.newImage.value.trim() && els.newSound.value.trim();
+      els.publishBtn.disabled = !ok;
+      els.applyOnlyBtn.disabled = !ok;
+    }
+    [els.newName, els.newImage, els.newSound].forEach(el => {
+      el.addEventListener('input', checkNewConfigReady);
+    });
+
+    async function createConfigData() {
+      const name = els.newName.value.trim();
+      const description = els.newDesc.value.trim();
+      const author = els.newAuthor.value.trim() || 'Аноним';
+      const image = els.newImage.value.trim();
+      const sound = els.newSound.value.trim();
+      return { name, description, author, image, sound };
+    }
+
+    els.publishBtn.addEventListener('click', async () => {
+      const data = await createConfigData();
+      if (!data.name) return;
+      const cid = makeConfigId();
+      els.publishBtn.disabled = true;
+      els.newStatus.className = 'status active info';
+      els.newStatus.textContent = '⏳ Публикую...';
+      try {
+        await db.ref('configs/' + cid).set({
+          ...data,
+          createdAt: Date.now(),
+          likes: {}
+        });
+        await db.ref('custom_pranks/' + id).update({
+          image: data.image, sound: data.sound, configId: cid
+        });
+        localStorage.setItem('tprank_username', data.author);
+        els.newStatus.className = 'status active ok';
+        els.newStatus.textContent = '✅ Конфиг опубликован! ID: ' + cid;
+      } catch (e) {
+        els.newStatus.className = 'status active err';
+        els.newStatus.textContent = '❌ Ошибка: ' + e.message;
+      } finally {
+        els.publishBtn.disabled = false;
+      }
+    });
+
+    els.applyOnlyBtn.addEventListener('click', async () => {
+      const data = await createConfigData();
+      if (!data.name) return;
+      els.applyOnlyBtn.disabled = true;
+      els.newStatus.className = 'status active info';
+      els.newStatus.textContent = '⏳ Применяю к метке...';
+      try {
+        await db.ref('custom_pranks/' + id).update({
+          image: data.image, sound: data.sound, configId: ''
+        });
+        els.currentThumb.style.backgroundImage = `url('${data.image}')`;
+        els.currentConfig.textContent = 'Конфиг: кастомный';
+        els.newStatus.className = 'status active ok';
+        els.newStatus.textContent = '✅ Применено только к метке.';
+      } catch (e) {
+        els.newStatus.className = 'status active err';
+        els.newStatus.textContent = '❌ Ошибка: ' + e.message;
+      } finally {
+        els.applyOnlyBtn.disabled = false;
+      }
+    });
+
+    els.detonateBtn.addEventListener('click', async () => {
+      els.detonateBtn.disabled = true;
+      els.detonateStatus.className = 'status active info';
+      els.detonateStatus.textContent = '⏳ Детонирую...';
+      try {
+        await db.ref('custom_pranks/' + id).update({ detonate: true });
+        els.detonateStatus.className = 'status active ok';
+        els.detonateStatus.textContent = '🔴 ДЕТОНИРОВАНО!';
+        els.detonateBtn.textContent = '🔴 ДЕТОНИРОВАНО';
+        els.detonateBtn.classList.add('btn-active');
+      } catch (e) {
+        els.detonateStatus.className = 'status active err';
+        els.detonateStatus.textContent = '❌ Ошибка: ' + e.message;
+      } finally {
+        els.detonateBtn.disabled = false;
+      }
+    });
+
+    els.cancelDetonateBtn.addEventListener('click', async () => {
+      try {
+        await db.ref('custom_pranks/' + id).update({ detonate: false });
+        els.detonateStatus.className = 'status active ok';
+        els.detonateStatus.textContent = '⏹ Детонация отменена.';
+        els.detonateBtn.textContent = '🔴 ДЕТОНИРОВАТЬ';
+        els.detonateBtn.classList.remove('btn-active');
+      } catch (e) {
+        els.detonateStatus.className = 'status active err';
+        els.detonateStatus.textContent = '❌ Ошибка: ' + e.message;
+      }
+    });
+
+    checkAuth();
+  }
+
+  // ПРАНК-СТРАНИЦА
+  function startPrankMode(id) {
+    const bgImage = document.getElementById('bgImage');
+    const centerImage = document.getElementById('centerImage');
+    const muteBtn = document.getElementById('muteBtn');
+    const hintText = document.getElementById('hintText');
+    const audioEl = document.getElementById('audioEl');
+
+    let prank = null;
+    let armed = false;
+    let soundPlaying = false;
+    let waitDetonate = false;
+
+    db.ref('custom_pranks/' + id).once('value').then(snap => {
+      if (!snap.exists()) {
+        document.body.innerHTML = '<div style="text-align:center;padding:60px;color:#888;">Метка не найдена</div>';
+        return;
+      }
+      prank = snap.val();
+      waitDetonate = !!prank.waitDetonate;
+      bgImage.style.backgroundImage = prank.image ? `url('${prank.image}')` : 'none';
+      centerImage.style.backgroundImage = prank.image ? `url('${prank.image}')` : 'none';
+
+      db.ref('custom_pranks/' + id + '/detonate').on('value', s => {
+        const detonate = s.val();
+        if (detonate === true && armed && !soundPlaying) playSound();
+        if (detonate === false && soundPlaying) stopSound();
+      });
+    });
+
+    function playSound() {
+      if (soundPlaying) return;
+      soundPlaying = true;
+      if (prank.sound) {
+        audioEl.src = prank.sound;
+        audioEl.currentTime = 0;
+        audioEl.play().catch(() => {});
+      }
+      muteBtn.classList.add('visible');
+      hintText.classList.remove('visible');
+    }
+    function stopSound() {
+      audioEl.pause();
+      audioEl.currentTime = 0;
+      soundPlaying = false;
+      muteBtn.classList.remove('visible');
+    }
+    function arm() {
+      if (armed) return;
+      armed = true;
+      db.ref('custom_pranks/' + id).update({ armed: true });
+      centerImage.classList.remove('pressed');
+      void centerImage.offsetWidth;
+      centerImage.classList.add('pressed');
+      if (waitDetonate) hintText.classList.add('visible');
+      else playSound();
+    }
+    document.body.addEventListener('click', (e) => {
+      if (e.target.closest('#muteBtn')) return;
+      arm();
+    });
+    document.body.addEventListener('touchstart', (e) => {
+      if (e.target.closest('#muteBtn')) return;
+      arm();
+    }, { passive: true });
+    muteBtn.addEventListener('click', (e) => { e.stopPropagation(); });
+  }
+
+})();
+</script>
+</body>
+</html>
