@@ -1600,82 +1600,28 @@
     let armed = false;
     let soundPlaying = false;
     let waitDetonate = false;
-    let imageLoaded = false;
-    let tapBeforeLoad = false;
-    let dataLoaded = false;
+    let ready = false;
+    let shouldStart = false;
+    let lastTap = 0;
 
-    // Показываем тёмную кнопку сразу
+    // Кнопка-заглушка видна сразу
     centerImage.style.backgroundImage = 'none';
     centerImage.style.backgroundColor = '#1a1a2e';
 
-    // Обработка тапа
-    function handleTap(e) {
-      if (e && e.target && e.target.closest('#muteBtn')) return;
+    function tryArm() {
       if (armed) return;
-
-      // Визуальный отклик на тап
-      centerImage.classList.remove('pressed');
-      void centerImage.offsetWidth;
-      centerImage.classList.add('pressed');
-
-      if (!dataLoaded || !imageLoaded) {
-        // Запоминаем тап — запустим позже
-        tapBeforeLoad = true;
+      if (!ready) {
+        shouldStart = true;
         return;
       }
-
-      // Всё загружено — запускаем
-      arm();
-    }
-
-    document.body.addEventListener('click', handleTap);
-    document.body.addEventListener('touchstart', handleTap, { passive: true });
-
-    // Загружаем данные метки
-    db.ref('custom_pranks/' + id).once('value').then(snap => {
-      if (!snap.exists()) {
-        document.body.innerHTML = '<div style="text-align:center;padding:60px;color:#888;">Метка не найдена</div>';
-        return;
-      }
-      prank = snap.val();
-      waitDetonate = !!prank.waitDetonate;
-      dataLoaded = true;
-
-      // Подписка на детонатор
-      db.ref('custom_pranks/' + id + '/detonate').on('value', s => {
-        const detonate = s.val();
-        if (detonate === true && armed && !soundPlaying) playSound();
-        if (detonate === false && soundPlaying) stopSound();
-      });
-
-      // Загружаем картинку
-      if (prank.image) {
-        // Размытый фон
-        bgImage.style.backgroundImage = `url('${prank.image}')`;
-
-        // Круглая кнопка — предзагружаем картинку
-        const img = new Image();
-        img.onload = () => {
-          centerImage.style.backgroundImage = `url('${prank.image}')`;
-          centerImage.style.backgroundColor = 'transparent';
-          imageLoaded = true;
-
-          // Если пользователь уже тапнул — запускаем
-          if (tapBeforeLoad) {
-            arm();
-          }
-        };
-        img.onerror = () => {
-          imageLoaded = true;
-          if (tapBeforeLoad) arm();
-        };
-        img.src = prank.image;
+      armed = true;
+      db.ref('custom_pranks/' + id).update({ armed: true });
+      if (waitDetonate) {
+        hintText.classList.add('visible');
       } else {
-        // Нет картинки — сразу готово
-        imageLoaded = true;
-        if (tapBeforeLoad) arm();
+        playSound();
       }
-    });
+    }
 
     function playSound() {
       if (soundPlaying) return;
@@ -1694,17 +1640,71 @@
       soundPlaying = false;
       muteBtn.classList.remove('visible');
     }
-    function arm() {
-      if (armed) return;
-      armed = true;
-      db.ref('custom_pranks/' + id).update({ armed: true });
-      if (waitDetonate) {
-        hintText.classList.add('visible');
-      } else {
-        playSound();
-      }
+
+    function onTap(e) {
+      if (e && e.target && e.target.closest('#muteBtn')) return;
+      const now = Date.now();
+      if (now - lastTap < 100) return;
+      lastTap = now;
+
+      // Анимация нажатия
+      centerImage.classList.remove('pressed');
+      void centerImage.offsetWidth;
+      centerImage.classList.add('pressed');
+
+      tryArm();
     }
+
+    document.body.addEventListener('click', onTap);
+    document.body.addEventListener('touchstart', onTap, { passive: true });
+
     muteBtn.addEventListener('click', (e) => { e.stopPropagation(); });
+
+    // Загружаем данные
+    db.ref('custom_pranks/' + id).once('value').then(snap => {
+      if (!snap.exists()) {
+        document.body.innerHTML = '<div style="text-align:center;padding:60px;color:#888;">Метка не найдена</div>';
+        return;
+      }
+      prank = snap.val();
+      waitDetonate = !!prank.waitDetonate;
+
+      // Подписка на детонатор
+      db.ref('custom_pranks/' + id + '/detonate').on('value', s => {
+        const detonate = s.val();
+        if (detonate === true && armed && !soundPlaying) playSound();
+        if (detonate === false && soundPlaying) stopSound();
+      });
+
+      // Загружаем картинку
+      if (prank.image) {
+        bgImage.style.backgroundImage = `url('${prank.image}')`;
+        const img = new Image();
+        img.onload = () => {
+          centerImage.style.backgroundImage = `url('${prank.image}')`;
+          centerImage.style.backgroundColor = 'transparent';
+          ready = true;
+          if (shouldStart) {
+            shouldStart = false;
+            tryArm();
+          }
+        };
+        img.onerror = () => {
+          ready = true;
+          if (shouldStart) {
+            shouldStart = false;
+            tryArm();
+          }
+        };
+        img.src = prank.image;
+      } else {
+        ready = true;
+        if (shouldStart) {
+          shouldStart = false;
+          tryArm();
+        }
+      }
+    });
   }
 
 })();
