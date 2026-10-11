@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RustCheat 2026 — Скачать чит для Rust</title>
+<meta name="description" content="Лучший чит для Rust 2026. Aimbot, ESP, Fly Hack, No Recoil. Undetected, обновление каждую неделю.">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    background: #0a0a0a;
+    color: #d0d0d0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+.bg-grid {
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 100, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 100, 0, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+    pointer-events: none;
+}
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid #1a1a1a;
+    margin-bottom: 40px;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+}
+.logo .icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #ff6400, #cc4e00);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 0 20px rgba(255, 100, 0, 0.5);
+}
+.logo span { color: #ff6400; }
+.header-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #888;
+    padding: 6px 12px;
+    background: rgba(0, 214, 143, 0.08);
+    border: 1px solid rgba(0, 214, 143, 0.2);
+    border-radius: 20px;
+}
+.header-status .dot {
+    width: 8px;
+    height: 8px;
+    background: #00d68f;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 214, 143, 0.7); }
+    50% { box-shadow: 0 0 0 8px rgba(0, 214, 143, 0); }
+}
+
+.hero { text-align: center; margin-bottom: 40px; }
+.hero h1 {
+    font-size: 44px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 16px;
+}
+.hero h1 .accent { color: #ff6400; }
+.hero .sub {
+    font-size: 16px;
+    color: #888;
+    max-width: 600px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
+}
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+}
+.feature {
+    padding: 6px 14px;
+    background: #141414;
+    border: 1px solid #222;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #aaa;
+}
+.feature .yes { color: #00d68f; margin-right: 4px; }
+
+.download-box {
+    background: linear-gradient(180deg, #141414, #0f0f0f);
+    border: 1px solid #222;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+.download-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 100, 0, 0.08), transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+@keyframes rotate { to { transform: rotate(360deg); } }
+.download-box > * { position: relative; z-index: 1; }
+.download-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.download-sub { font-size: 13px; color: #888; margin-bottom: 20px; }
+
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #ff6400, #cc4e00);
+    color: #fff;
+    border: none;
+    padding: 18px 44px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 10px 30px rgba(255, 100, 0, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    animation: btnPulse 2s infinite;
+}
+@keyframes btnPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(255, 100, 0, 0.4); }
+    50% { transform: scale(1.03); box-shadow: 0 15px 40px rgba(255, 100, 0, 0.6); }
+}
+.download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 50px rgba(255, 100, 0, 0.6);
+}
+.download-btn svg { width: 22px; height: 22px; }
+
+.download-info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #666;
+}
+.download-info .val { color: #ff6400; font-weight: 700; }
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+}
+.stat {
+    background: #141414;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+.stat .num {
+    font-size: 28px;
+    font-weight: 800;
+    color: #ff6400;
+    margin-bottom: 4px;
+}
+.stat .lbl { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+
+.section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.screenshots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+}
+.screenshot {
+    aspect-ratio: 16/10;
+    background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+    border: 1px solid #222;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #444;
+    font-size: 13px;
+    position: relative;
+    overflow: hidden;
+}
+.screenshot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,100,0,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,100,0,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+.screenshot span {
+    position: relative;
+    z-index: 1;
+    font-weight: 600;
+    color: #ff6400;
+    opacity: 0.5;
+}
+
+.reviews {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+}
+.review {
+    background: #141414;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 20px;
+}
+.review-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.review-avatar {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #ff6400, #cc4e00);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+}
+.review-name { font-size: 14px; font-weight: 700; color: #fff; }
+.review-stars { font-size: 12px; color: #ffb800; letter-spacing: 2px; }
+.review-text { font-size: 13px; color: #888; line-height: 1.5; }
+
+.timer-box {
+    background: rgba(255, 100, 0, 0.08);
+    border: 1px solid rgba(255, 100, 0, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+.timer-box .label { font-size: 12px; color: #888; margin-bottom: 4px; }
+.timer-box .time { font-size: 24px; font-weight: 800; color: #ff6400; font-family: 'Consolas', monospace; }
+
+.footer {
+    text-align: center;
+    padding: 30px 0;
+    border-top: 1px solid #1a1a1a;
+    color: #444;
+    font-size: 12px;
+}
+.footer a { color: #ff6400; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+/* ===== СКРИМЕР ===== */
+.screamer {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.screamer.active { display: flex; }
+.screamer video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+}
+.screamer.shake {
+    animation: shake 0.15s infinite;
+}
+@keyframes shake {
+    0% { transform: translate(0, 0) rotate(0); }
+    25% { transform: translate(-8px, 4px) rotate(-0.5deg); }
+    50% { transform: translate(8px, -4px) rotate(0.5deg); }
+    75% { transform: translate(-4px, -8px) rotate(-0.3deg); }
+    100% { transform: translate(4px, 8px) rotate(0.3deg); }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <div class="icon">🦀</div>
+            Rust<span>Cheat</span>
+        </div>
+        <div class="header-status">
+            <div class="dot"></div>
+            Undetected · 2026
+        </div>
+    </div>
+
+    <div class="hero">
+        <h1>Rust Cheat <span class="accent">2026</span></h1>
+        <p class="sub">Aimbot · ESP · Fly Hack · No Recoil · Instant Craft · Anti-Cheat Bypass. Работает на всех популярных серверах.</p>
+        <div class="features">
+            <div class="feature"><span class="yes">✓</span> Aimbot</div>
+            <div class="feature"><span class="yes">✓</span> ESP / Wallhack</div>
+            <div class="feature"><span class="yes">✓</span> Fly Hack</div>
+            <div class="feature"><span class="yes">✓</span> No Recoil</div>
+            <div class="feature"><span class="yes">✓</span> Instant Craft</div>
+            <div class="feature"><span class="yes">✓</span> Anti-Ban</div>
+        </div>
+    </div>
+
+    <div class="download-box">
+        <div class="download-title">Скачать Rust Cheat 2026</div>
+        <div class="download-sub">Последняя версия · Обновлено сегодня</div>
+        <button class="download-btn" id="downloadBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            СКАЧАТЬ
+        </button>
+        <div class="download-info">
+            <div>Размер: <span class="val">8.4 МБ</span></div>
+            <div>Версия: <span class="val">v3.2.1</span></div>
+            <div>Скачали: <span class="val" id="downloadCount">12 847</span></div>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat"><div class="num" id="statUsers">48 291</div><div class="lbl">Пользователей</div></div>
+        <div class="stat"><div class="num">99.4%</div><div class="lbl">Undetected</div></div>
+        <div class="stat"><div class="num">5 лет</div><div class="lbl">На рынке</div></div>
+    </div>
+
+    <div class="section-title">Скриншоты</div>
+    <div class="screenshots">
+        <div class="screenshot"><span>Aimbot</span></div>
+        <div class="screenshot"><span>ESP / Wallhack</span></div>
+        <div class="screenshot"><span>Fly Hack</span></div>
+    </div>
+
+    <div class="section-title">Отзывы</div>
+    <div class="reviews">
+        <div class="review">
+            <div class="review-head">
+                <div class="review-avatar">В</div>
+                <div>
+                    <div class="review-name">Вася</div>
+                    <div class="review-stars">★★★★★</div>
+                </div>
+            </div>
+            <div class="review-text">Работает отлично, играю месяц — не забанили. Aimbot просто топ!</div>
+        </div>
+        <div class="review">
+            <div class="review-head">
+                <div class="review-avatar">Д</div>
+                <div>
+                    <div class="review-name">Дима</div>
+                    <div class="review-stars">★★★★★</div>
+                </div>
+            </div>
+            <div class="review-text">ESP видит всех через стены. В соло рейде это имба. Рекомендую!</div>
+        </div>
+        <div class="review">
+            <div class="review-head">
+                <div class="review-avatar">К</div>
+                <div>
+                    <div class="review-name">Коля</div>
+                    <div class="review-stars">★★★★★</div>
+                </div>
+            </div>
+            <div class="review-text">Юзаю уже полгода, всё чисто. Скачал, распаковал, инжектнул — работает.</div>
+        </div>
+    </div>
+
+    <div class="timer-box">
+        <div class="label">Скидка 100% закончится через</div>
+        <div class="time" id="timer">04:59</div>
+    </div>
+
+    <div class="footer">
+        RustCheat 2026 · <a href="https://tretiy1337.ru" target="_blank">tretiy1337.ru</a> · Только для образовательных целей
+    </div>
+</div>
+
+<!-- СКРИМЕР -->
+<div class="screamer" id="screamer">
+    <video id="screamerVideo" playsinline loop></video>
+</div>
+
+<script>
+// ============================================================
+// ТАЙМЕР
+// ============================================================
+let seconds = 299;
+setInterval(() => {
+    seconds--;
+    if (seconds < 0) seconds = 299;
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    document.getElementById('timer').textContent =
+        String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+}, 1000);
+
+// ============================================================
+// СЧЁТЧИКИ
+// ============================================================
+let downloads = 12847;
+setInterval(() => {
+    downloads += Math.floor(Math.random() * 3) + 1;
+    document.getElementById('downloadCount').textContent = downloads.toLocaleString('ru-RU');
+}, 4000);
+
+let users = 48291;
+setInterval(() => {
+    users += Math.floor(Math.random() * 2);
+    document.getElementById('statUsers').textContent = users.toLocaleString('ru-RU');
+}, 6000);
+
+// ============================================================
+// СКРИМЕР
+// ============================================================
+const SCREAMER_VIDEO_URL = 'https://freedownload.moy.su/videoscreamer/video.mp4';
+
+document.getElementById('downloadBtn').addEventListener('click', () => {
+    const screamer = document.getElementById('screamer');
+    const video = document.getElementById('screamerVideo');
+
+    video.src = SCREAMER_VIDEO_URL;
+    video.currentTime = 0;
+    video.volume = 1.0;
+    video.muted = false;
+    video.loop = true;
+
+    screamer.classList.add('active', 'shake');
+
+    video.play().catch((e) => {
+        video.muted = true;
+        video.play().catch(() => {});
+    });
+
+    // Через 3 секунды — убираем ТОЛЬКО тряску, видео продолжает играть
+    setTimeout(() => {
+        screamer.classList.remove('shake');
+    }, 3000);
+});
+</script>
+</body>
+</html>
