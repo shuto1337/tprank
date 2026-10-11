@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>...</title>
+<meta name="theme-color" content="#000000">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: #000;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    user-select: none; -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+
+  /* Заблюренная картинка на фоне */
+  .bg-image {
+    position: fixed; inset: -30px;
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+    filter: blur(30px) brightness(0.55) saturate(1.4);
+    transform: scale(1.15);
+    z-index: 1;
+  }
+  .bg-overlay {
+    position: fixed; inset: 0;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.2), rgba(0,0,0,0.8));
+    z-index: 2;
+  }
+
+  /* Центральная кнопка-картинка */
+  .center-wrap {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+    padding: 20px;
+  }
+  .center-image {
+    width: 60vw; max-width: 380px;
+    aspect-ratio: 1 / 1;
+    border-radius: 30px;
+    background-size: cover; background-position: center;
+    box-shadow:
+      0 0 0 8px rgba(255,255,255,0.15),
+      0 0 0 16px rgba(255,255,255,0.08),
+      0 30px 80px rgba(0,0,0,0.7);
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .center-image:active { transform: scale(0.97); }
+
+  /* Видео на весь экран */
+  .fullscreen-video {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    background: #000;
+    z-index: 9999;
+    display: none;
+    cursor: pointer;
+  }
+  .fullscreen-video.active { display: block; }
+
+  /* Загрузка / ошибка */
+  .loading {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #666; font-size: 14px;
+    z-index: 5;
+  }
+  .error {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 10px;
+    color: #ff4757; font-size: 16px;
+    padding: 20px; text-align: center;
+    z-index: 5;
+  }
+  .error .subtext {
+    color: #888;
+    font-size: 14px;
+  }
+
+  audio { display: none; }
+</style>
+</head>
+<body>
+
+  <div class="loading" id="loading">Загрузка...</div>
+
+  <div class="bg-image" id="bgImage" style="display:none"></div>
+  <div class="bg-overlay" id="bgOverlay" style="display:none"></div>
+
+  <div class="center-wrap" id="centerWrap" style="display:none">
+    <div class="center-image" id="centerImage"></div>
+  </div>
+
+  <video class="fullscreen-video" id="videoEl" playsinline loop></video>
+  <audio id="audioEl" loop></audio>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script>
+(function() {
+  const firebaseConfig = {
+    apiKey: "AIzaSyDGb-vDdeM3vbACbIqQ_Yy4Yom6vsQdViY",
+    authDomain: "unogame-9414d.firebaseapp.com",
+    databaseURL: "https://unogame-9414d-default-rtdb.firebaseio.com",
+    projectId: "unogame-9414d",
+    storageBucket: "unogame-9414d.firebasestorage.app",
+    messagingSenderId: "609200346253",
+    appId: "1:609200346253:web:4ca96722ecad9ea0cffec4"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  const loading = document.getElementById('loading');
+  const bgImage = document.getElementById('bgImage');
+  const bgOverlay = document.getElementById('bgOverlay');
+  const centerWrap = document.getElementById('centerWrap');
+  const centerImage = document.getElementById('centerImage');
+  const videoEl = document.getElementById('videoEl');
+  const audioEl = document.getElementById('audioEl');
+
+  // Читаем id из URL
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+
+  if (!id) {
+    loading.outerHTML = '<div class="error"><div>Ошибка</div><div class="subtext">В ссылке нет id пранка</div></div>';
+    return;
+  }
+
+  // Загружаем пранк из Firebase
+  db.ref('custom_pranks/' + id).get().then(snap => {
+    if (!snap.exists()) {
+      loading.outerHTML = '<div class="error"><div>Пранк не найден</div><div class="subtext">Возможно, ссылка неверна или пранк удалён</div></div>';
+      return;
+    }
+
+    const prank = snap.val();
+
+    // Показываем фон и центральную картинку
+    bgImage.style.backgroundImage = `url('${prank.image}')`;
+    centerImage.style.backgroundImage = `url('${prank.image}')`;
+    bgImage.style.display = 'block';
+    bgOverlay.style.display = 'block';
+    centerWrap.style.display = 'flex';
+    loading.style.display = 'none';
+
+    // Заголовок страницы
+    if (prank.title) document.title = prank.title;
+
+    // Клик по центральной картинке
+    centerImage.addEventListener('click', () => {
+      if (prank.mediaType === 'video') {
+        // Видео на весь экран
+        if (!videoEl.src) videoEl.src = prank.media;
+        videoEl.classList.add('active');
+        videoEl.play().catch(() => {});
+      } else {
+        // Звук — играет в цикле
+        if (!audioEl.src) audioEl.src = prank.media;
+        audioEl.currentTime = 0;
+        audioEl.play().catch(() => {});
+      }
+    });
+
+    // Клик по видео — закрыть и остановить
+    videoEl.addEventListener('click', () => {
+      videoEl.pause();
+      videoEl.classList.remove('active');
+    });
+
+  }).catch(e => {
+    loading.outerHTML = '<div class="error"><div>Ошибка загрузки</div><div class="subtext">' + e.message + '</div></div>';
+  });
+})();
+</script>
+</body>
+</html>
