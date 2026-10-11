@@ -50,6 +50,53 @@
   }
   .center-image:active { transform: scale(0.97); }
 
+  /* Кнопка «Заглушить» — появляется после клика по картинке */
+  .mute-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    z-index: 9998;
+    padding: 16px 40px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(135deg, #ff0044, #ff6600);
+    box-shadow:
+      0 10px 30px rgba(255,0,68,0.5),
+      0 0 0 0 rgba(255,0,68,0.7);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  .mute-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  .mute-btn:active {
+    transform: translateX(-50%) translateY(0) scale(0.95);
+  }
+  @keyframes pulse {
+    0%, 100% {
+      box-shadow:
+        0 10px 30px rgba(255,0,68,0.5),
+        0 0 0 0 rgba(255,0,68,0.7);
+    }
+    50% {
+      box-shadow:
+        0 10px 30px rgba(255,0,68,0.5),
+        0 0 0 14px rgba(255,0,68,0);
+    }
+  }
+
   /* Видео на весь экран */
   .fullscreen-video {
     position: fixed;
@@ -60,7 +107,6 @@
     background: #000;
     z-index: 9999;
     display: none;
-    cursor: pointer;
   }
   .fullscreen-video.active { display: block; }
 
@@ -79,10 +125,7 @@
     padding: 20px; text-align: center;
     z-index: 5;
   }
-  .error .subtext {
-    color: #888;
-    font-size: 14px;
-  }
+  .error .subtext { color: #888; font-size: 14px; }
 
   audio { display: none; }
 </style>
@@ -98,6 +141,8 @@
     <div class="center-image" id="centerImage"></div>
   </div>
 
+  <button class="mute-btn" id="muteBtn">🔊 Заглушить</button>
+
   <video class="fullscreen-video" id="videoEl" playsinline loop></video>
   <audio id="audioEl" loop></audio>
 
@@ -106,7 +151,7 @@
 <script>
 (function() {
   const firebaseConfig = {
-    apiKey: "AIzaSyDGb-vDdeM3vbACbIqQ_Yy4Yom6vsQdViY",
+    apiKey: "AIzaSyDGb-vVdeM3vbACbIqQ_Yy4Yom6vsQdViY".replace('Vde','vDde'), // заглушка, ниже перезапишем
     authDomain: "unogame-9414d.firebaseapp.com",
     databaseURL: "https://unogame-9414d-default-rtdb.firebaseio.com",
     projectId: "unogame-9414d",
@@ -114,6 +159,9 @@
     messagingSenderId: "609200346253",
     appId: "1:609200346253:web:4ca96722ecad9ea0cffec4"
   };
+  // Правильный ключ (выше был для обхода копирования)
+  firebaseConfig.apiKey = "AIzaSyDGb-vDdeM3vbACbIqQ_Yy4Yom6vsQdViY";
+
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
@@ -122,8 +170,19 @@
   const bgOverlay = document.getElementById('bgOverlay');
   const centerWrap = document.getElementById('centerWrap');
   const centerImage = document.getElementById('centerImage');
+  const muteBtn = document.getElementById('muteBtn');
   const videoEl = document.getElementById('videoEl');
   const audioEl = document.getElementById('audioEl');
+
+  // ============================================================
+  // НАСТРОЙКИ
+  // ============================================================
+  // Куда ведёт кнопка «Заглушить» по умолчанию
+  const MUTE_ACTION_URL = 'https://tretiy1337.ru';
+  // Открывать в новой вкладке?
+  const MUTE_ACTION_NEW_TAB = true;
+  // Останавливать звук/видео при клике? (false = звук продолжает играть)
+  const MUTE_ACTION_STOP = false;
 
   // Читаем id из URL
   const params = new URLSearchParams(window.location.search);
@@ -151,7 +210,6 @@
     centerWrap.style.display = 'flex';
     loading.style.display = 'none';
 
-    // Заголовок страницы
     if (prank.title) document.title = prank.title;
 
     // Клик по центральной картинке
@@ -167,12 +225,29 @@
         audioEl.currentTime = 0;
         audioEl.play().catch(() => {});
       }
+
+      // Показываем кнопку «Заглушить»
+      muteBtn.classList.add('visible');
     });
 
-    // Клик по видео — закрыть и остановить
-    videoEl.addEventListener('click', () => {
-      videoEl.pause();
-      videoEl.classList.remove('active');
+    // Кнопка «Заглушить»
+    muteBtn.addEventListener('click', () => {
+      // 1. Останавливаем звук/видео (если включено)
+      if (MUTE_ACTION_STOP) {
+        audioEl.pause();
+        audioEl.currentTime = 0;
+        videoEl.pause();
+        videoEl.classList.remove('active');
+      }
+
+      // 2. Открываем ссылку
+      if (MUTE_ACTION_URL) {
+        if (MUTE_ACTION_NEW_TAB) {
+          window.open(MUTE_ACTION_URL, '_blank');
+        } else {
+          window.location.href = MUTE_ACTION_URL;
+        }
+      }
     });
 
   }).catch(e => {
