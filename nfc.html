@@ -1600,7 +1600,38 @@
     let armed = false;
     let soundPlaying = false;
     let waitDetonate = false;
+    let imageLoaded = false;
+    let tapBeforeLoad = false;
+    let dataLoaded = false;
 
+    // Показываем тёмную кнопку сразу
+    centerImage.style.backgroundImage = 'none';
+    centerImage.style.backgroundColor = '#1a1a2e';
+
+    // Обработка тапа
+    function handleTap(e) {
+      if (e && e.target && e.target.closest('#muteBtn')) return;
+      if (armed) return;
+
+      // Визуальный отклик на тап
+      centerImage.classList.remove('pressed');
+      void centerImage.offsetWidth;
+      centerImage.classList.add('pressed');
+
+      if (!dataLoaded || !imageLoaded) {
+        // Запоминаем тап — запустим позже
+        tapBeforeLoad = true;
+        return;
+      }
+
+      // Всё загружено — запускаем
+      arm();
+    }
+
+    document.body.addEventListener('click', handleTap);
+    document.body.addEventListener('touchstart', handleTap, { passive: true });
+
+    // Загружаем данные метки
     db.ref('custom_pranks/' + id).once('value').then(snap => {
       if (!snap.exists()) {
         document.body.innerHTML = '<div style="text-align:center;padding:60px;color:#888;">Метка не найдена</div>';
@@ -1608,20 +1639,48 @@
       }
       prank = snap.val();
       waitDetonate = !!prank.waitDetonate;
-      bgImage.style.backgroundImage = prank.image ? `url('${prank.image}')` : 'none';
-      centerImage.style.backgroundImage = prank.image ? `url('${prank.image}')` : 'none';
+      dataLoaded = true;
 
+      // Подписка на детонатор
       db.ref('custom_pranks/' + id + '/detonate').on('value', s => {
         const detonate = s.val();
         if (detonate === true && armed && !soundPlaying) playSound();
         if (detonate === false && soundPlaying) stopSound();
       });
+
+      // Загружаем картинку
+      if (prank.image) {
+        // Размытый фон
+        bgImage.style.backgroundImage = `url('${prank.image}')`;
+
+        // Круглая кнопка — предзагружаем картинку
+        const img = new Image();
+        img.onload = () => {
+          centerImage.style.backgroundImage = `url('${prank.image}')`;
+          centerImage.style.backgroundColor = 'transparent';
+          imageLoaded = true;
+
+          // Если пользователь уже тапнул — запускаем
+          if (tapBeforeLoad) {
+            arm();
+          }
+        };
+        img.onerror = () => {
+          imageLoaded = true;
+          if (tapBeforeLoad) arm();
+        };
+        img.src = prank.image;
+      } else {
+        // Нет картинки — сразу готово
+        imageLoaded = true;
+        if (tapBeforeLoad) arm();
+      }
     });
 
     function playSound() {
       if (soundPlaying) return;
       soundPlaying = true;
-      if (prank.sound) {
+      if (prank && prank.sound) {
         audioEl.src = prank.sound;
         audioEl.currentTime = 0;
         audioEl.play().catch(() => {});
@@ -1639,20 +1698,12 @@
       if (armed) return;
       armed = true;
       db.ref('custom_pranks/' + id).update({ armed: true });
-      centerImage.classList.remove('pressed');
-      void centerImage.offsetWidth;
-      centerImage.classList.add('pressed');
-      if (waitDetonate) hintText.classList.add('visible');
-      else playSound();
+      if (waitDetonate) {
+        hintText.classList.add('visible');
+      } else {
+        playSound();
+      }
     }
-    document.body.addEventListener('click', (e) => {
-      if (e.target.closest('#muteBtn')) return;
-      arm();
-    });
-    document.body.addEventListener('touchstart', (e) => {
-      if (e.target.closest('#muteBtn')) return;
-      arm();
-    }, { passive: true });
     muteBtn.addEventListener('click', (e) => { e.stopPropagation(); });
   }
 
