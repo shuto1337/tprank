@@ -21,7 +21,6 @@
     background-clip: text;
   }
   .sub { color: #888; font-size: 13px; margin-bottom: 30px; }
-
   .card {
     background: rgba(18,18,31,0.7);
     border: 1px solid #2a2a40;
@@ -30,19 +29,19 @@
     margin-bottom: 18px;
   }
   .card h3 { font-size: 15px; font-weight: 800; margin-bottom: 14px; color: #ff6b6b; }
-
   label {
     display: block; font-size: 12px; color: #888;
     margin-bottom: 6px; margin-top: 14px;
     font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
   }
-  input[type="text"], input[type="file"] {
+  input[type="text"], input[type="file"], select {
     width: 100%; padding: 11px 14px;
     background: #0a0a14; border: 1px solid #2a2a40;
     border-radius: 10px; color: #fff; font-size: 14px;
     font-family: inherit; outline: none; transition: 0.2s;
   }
-  input[type="text"]:focus { border-color: #ff0044; }
+  input[type="text"]:focus, select:focus { border-color: #ff0044; }
+  select { cursor: pointer; }
   input[type="file"] { padding: 9px; cursor: pointer; }
   input[type="file"]::file-selector-button {
     background: linear-gradient(135deg, #ff0044, #ff6600);
@@ -50,7 +49,6 @@
     border-radius: 8px; font-weight: 700; cursor: pointer;
     font-family: inherit; margin-right: 10px;
   }
-
   .instructions {
     background: rgba(108,92,231,0.1);
     border: 1px solid rgba(108,92,231,0.3);
@@ -70,11 +68,7 @@
   .instructions b { color: #fff; }
   .instructions ol { padding-left: 20px; margin: 6px 0; }
   .instructions li { margin-bottom: 5px; }
-  .instructions a {
-    color: #a29bfe;
-    font-weight: 700;
-    text-decoration: none;
-  }
+  .instructions a { color: #a29bfe; font-weight: 700; text-decoration: none; }
   .instructions a:hover { text-decoration: underline; }
   .instructions ul { padding-left: 20px; margin: 6px 0; }
   .instructions code {
@@ -86,16 +80,8 @@
     font-size: 12px;
     word-break: break-all;
   }
-  .instructions .warn {
-    color: #888;
-    font-size: 12px;
-    margin-top: 8px;
-    line-height: 1.5;
-  }
-
-  .radio-row {
-    display: flex; gap: 10px; margin-top: 10px;
-  }
+  .instructions .warn { color: #888; font-size: 12px; margin-top: 8px; line-height: 1.5; }
+  .radio-row { display: flex; gap: 10px; margin-top: 10px; }
   .radio-row label {
     flex: 1;
     display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -120,7 +106,6 @@
     border-color: #ff0044;
     color: #fff;
   }
-
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     width: 100%;
@@ -132,7 +117,6 @@
   }
   .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,0,68,0.5); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
   .status {
     padding: 12px 14px; border-radius: 10px; font-size: 13px;
     margin-top: 12px; display: none; line-height: 1.5;
@@ -141,7 +125,6 @@
   .status.info { background: rgba(108,92,231,0.15); color: #a29bfe; border: 1px solid rgba(108,92,231,0.3); }
   .status.ok { background: rgba(0,214,143,0.15); color: #00d68f; border: 1px solid rgba(0,214,143,0.3); }
   .status.err { background: rgba(255,71,87,0.15); color: #ff4757; border: 1px solid rgba(255,71,87,0.3); }
-
   .result { display: none; margin-top: 18px; }
   .result.active { display: block; }
   .result-box {
@@ -175,17 +158,10 @@
     font-family: inherit;
     transition: 0.2s;
   }
-  .btn-copy {
-    background: linear-gradient(135deg, #6c5ce7, #00d68f);
-    color: #fff;
-  }
+  .btn-copy { background: linear-gradient(135deg, #6c5ce7, #00d68f); color: #fff; }
   .btn-copy:hover { transform: translateY(-2px); }
-  .btn-open {
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-  }
+  .btn-open { background: rgba(255,255,255,0.08); color: #fff; }
   .btn-open:hover { background: rgba(255,255,255,0.15); }
-
   .preview {
     margin-top: 12px;
     width: 100%;
@@ -203,17 +179,16 @@
   <div class="sub">tprank · создай свою ссылку за 30 секунд</div>
 
   <div class="card">
-    <h3>1️⃣ Название пранка</h3>
+    <h3>📝 Название пранка</h3>
     <input type="text" id="prankTitle" placeholder="Мой крутой пранк" maxlength="60">
   </div>
 
   <div class="card">
-    <h3>2️⃣ Картинка (фон + кнопка)</h3>
+    <h3>🖼 Картинка (фон + кнопка)</h3>
     <input type="file" id="imageFile" accept="image/*">
     <img id="imagePreview" class="preview" alt="">
-
     <div class="instructions">
-      <div class="title">📷 Про картинку</div>
+      <div class="title">Про картинку</div>
       Картинка загружается автоматически на ImgBB. Требования:
       <ul>
         <li>Формат: <b>JPG, PNG, GIF, WebP</b></li>
@@ -224,7 +199,7 @@
   </div>
 
   <div class="card">
-    <h3>3️⃣ Звук или видео</h3>
+    <h3>🎵 Звук или видео</h3>
     <div class="radio-row">
       <label id="labelSound">
         <input type="radio" name="mediaType" value="sound" checked>
@@ -235,26 +210,22 @@
         <span>🎬 Видео (mp4)</span>
       </label>
     </div>
-
     <label>Ссылка на файл</label>
     <input type="text" id="mediaUrl" placeholder="https://www.myinstants.com/media/sounds/xxx.mp3">
-
     <div class="instructions">
-      <div class="title">🎵 Как получить прямую ссылку на звук или видео</div>
-
+      <div class="title">Как получить прямую ссылку на звук или видео</div>
       <div style="margin-bottom:12px;">
         <b>Способ 1 — myinstants.com</b>
         <ol>
           <li>Открой <a href="https://www.myinstants.com/" target="_blank">myinstants.com</a> и найди звук</li>
           <li><b>Нажми по названию звука</b> (обычный клик)</li>
-          <li>Откроется страница со звуком и кнопкой <b>«Скачать mp3»</b> (там же будут другие кнопки — не трогай их)</li>
+          <li>Откроется страница со звуком и кнопкой <b>«Скачать mp3»</b></li>
           <li><b>Правый клик именно по кнопке «Скачать mp3»</b> → <b>«Копировать ссылку»</b></li>
           <li>Получишь прямую ссылку вида:<br>
             <code>https://www.myinstants.com/media/sounds/xxx.mp3</code>
           </li>
         </ol>
       </div>
-
       <div style="margin-bottom:12px;">
         <b>Способ 2 — любой файлохостинг</b>
         <ol>
@@ -269,7 +240,6 @@
           <li>В буфере окажется <b>прямая</b> ссылка на файл</li>
         </ol>
       </div>
-
       <div class="warn">
         ⚠️ Нужна <b>прямая</b> ссылка — заканчивается на <code>.mp3</code>, <code>.mp4</code>, <code>.wav</code>.<br>
         Ссылка на страницу (без расширения файла) не подойдёт.
@@ -277,8 +247,26 @@
     </div>
   </div>
 
-  <button class="btn" id="createBtn" disabled>🚀 Создать пранк</button>
+  <!-- НОВЫЙ БЛОК: Кнопка Заглушить -->
+  <div class="card">
+    <h3>🔇 Кнопка «Заглушить»</h3>
+    <label>Что делает кнопка</label>
+    <select id="muteAction">
+      <option value="open">Открывает ссылку в новой вкладке</option>
+      <option value="stop">Заглушает звук/видео</option>
+      <option value="both">Заглушает и открывает ссылку</option>
+      <option value="none">Ничего не делает</option>
+    </select>
+    <label>Ссылка для кнопки (если открывает)</label>
+    <input type="text" id="muteUrl" placeholder="https://tretiy1337.ru" value="https://tretiy1337.ru">
+    <div class="instructions">
+      <div class="title">Что это</div>
+      Когда пользователь нажмёт на картинку пранка — запустится звук/видео и появится кнопка «Заглушить».<br>
+      Здесь ты выбираешь, что эта кнопка будет делать.
+    </div>
+  </div>
 
+  <button class="btn" id="createBtn" disabled>🚀 Создать пранк</button>
   <div class="status" id="status"></div>
 
   <div class="result" id="result">
@@ -316,6 +304,8 @@
     imageFile: document.getElementById('imageFile'),
     imagePreview: document.getElementById('imagePreview'),
     mediaUrl: document.getElementById('mediaUrl'),
+    muteAction: document.getElementById('muteAction'),
+    muteUrl: document.getElementById('muteUrl'),
     createBtn: document.getElementById('createBtn'),
     status: document.getElementById('status'),
     result: document.getElementById('result'),
@@ -385,7 +375,8 @@
     const title = els.title.value.trim();
     const image = els.imageFile.files[0];
     const medUrl = els.mediaUrl.value.trim();
-
+    const muteAction = els.muteAction.value;
+    const muteUrl = els.muteUrl.value.trim();
     if (!title || !image || !medUrl) return;
 
     els.createBtn.disabled = true;
@@ -393,7 +384,7 @@
 
     try {
       const imgUrl = await uploadImage(image);
-      showStatus('⏳ Сохраняю в базу...', 'info');
+      showStatus('💾 Сохраняю в базу...', 'info');
 
       const id = makeId();
       const prankData = {
@@ -401,9 +392,10 @@
         image: imgUrl,
         media: medUrl,
         mediaType: mediaType,
+        muteAction: muteAction,
+        muteUrl: muteUrl,
         createdAt: Date.now()
       };
-
       await db.ref('custom_pranks/' + id).set(prankData);
 
       const url = 'https://shuto1337.github.io/tprank/p.html?id=' + id;
@@ -416,7 +408,6 @@
       els.mediaUrl.value = '';
       els.imagePreview.classList.remove('visible');
       checkReady();
-
     } catch (e) {
       showStatus('❌ Ошибка: ' + e.message, 'err');
     } finally {
@@ -429,6 +420,7 @@
       showStatus('📋 Ссылка скопирована!', 'ok');
     });
   });
+
   els.openBtn.addEventListener('click', () => {
     window.open(els.resultUrl.textContent, '_blank');
   });
