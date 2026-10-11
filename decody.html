@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>tprank | tretiy1337.ru</title>
+<meta name="theme-color" content="#0a0a14">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: #0a0a14;
+    font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+    user-select: none; -webkit-user-select: none;
+    touch-action: manipulation;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  /* ===== ФОН ===== */
+  .bg-image {
+    position: fixed; inset: -80px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(50px) brightness(0.4) saturate(1.8);
+    transform: scale(1.3);
+    z-index: 1;
+    animation: bgPulse 10s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes bgPulse {
+    0%, 100% { transform: scale(1.3) rotate(0deg); filter: blur(50px) brightness(0.4) saturate(1.8); }
+    50% { transform: scale(1.4) rotate(2deg); filter: blur(55px) brightness(0.45) saturate(2); }
+  }
+
+  /* ===== ЦВЕТНЫЕ ПЯТНА ===== */
+  .glow-1, .glow-2, .glow-3, .glow-4 {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.6;
+    z-index: 2;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+  .glow-1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, #ff0044, transparent 70%);
+    top: -150px; left: -150px;
+    animation: float1 14s ease-in-out infinite;
+  }
+  .glow-2 {
+    width: 450px; height: 450px;
+    background: radial-gradient(circle, #6c5ce7, transparent 70%);
+    bottom: -150px; right: -150px;
+    animation: float2 16s ease-in-out infinite;
+  }
+  .glow-3 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, #00d68f, transparent 70%);
+    top: 50%; right: -200px;
+    animation: float3 12s ease-in-out infinite;
+  }
+  .glow-4 {
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, #ffcc00, transparent 70%);
+    bottom: 30%; left: -180px;
+    animation: float4 18s ease-in-out infinite;
+  }
+  @keyframes float1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(120px, 80px) scale(1.2); }
+  }
+  @keyframes float2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-100px, -70px) scale(1.15); }
+  }
+  @keyframes float3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-90px, 100px) scale(1.1); }
+  }
+  @keyframes float4 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(100px, -80px) scale(1.2); }
+  }
+
+  /* ===== ОВЕРЛЕЙ ===== */
+  .bg-overlay {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(circle at center, rgba(0,0,0,0.1), rgba(0,0,0,0.9)),
+      linear-gradient(180deg, rgba(255,0,68,0.05), transparent 40%, rgba(108,92,231,0.08));
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  /* ===== ЧАСТИЦЫ ===== */
+  .particles {
+    position: fixed; inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: rise linear infinite;
+    box-shadow: 0 0 6px currentColor;
+  }
+  @keyframes rise {
+    0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    50% { transform: translateY(50vh) scale(1) rotate(180deg); }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(-100px) scale(0.5) rotate(360deg); opacity: 0; }
+  }
+
+  /* ===== РАДУЖНАЯ ПОЛОСА СВЕРХУ ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 5px;
+    z-index: 999;
+    background: linear-gradient(90deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff, #ff0000);
+    background-size: 300% 100%;
+    animation: rainbowMove 3s linear infinite;
+    box-shadow: 0 0 25px rgba(255,0,68,0.9), 0 0 50px rgba(108,92,231,0.5);
+    pointer-events: none;
+  }
+  @keyframes rainbowMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+  }
+
+  /* ===== РАДУЖНАЯ ПОЛОСА СНИЗУ ===== */
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: 0; left: 0;
+    width: 100%; height: 5px;
+    z-index: 999;
+    background: linear-gradient(90deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff, #ff0000);
+    background-size: 300% 100%;
+    animation: rainbowMove 3s linear infinite reverse;
+    box-shadow: 0 0 25px rgba(255,0,68,0.9), 0 0 50px rgba(0,214,143,0.5);
+    pointer-events: none;
+  }
+
+  /* ===== ЦЕНТРАЛЬНАЯ КАРТИНКА ===== */
+  .center-wrap {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+    padding: 20px;
+    perspective: 1000px;
+    pointer-events: none;
+  }
+  .center-image {
+    width: 60vw; max-width: 380px;
+    aspect-ratio: 1 / 1;
+    border-radius: 32px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: imageAppear 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), floatImage 5s ease-in-out infinite;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.25),
+      0 0 0 12px rgba(255,255,255,0.08),
+      0 0 0 24px rgba(255,255,255,0.04),
+      0 40px 100px rgba(0,0,0,0.9),
+      0 0 150px rgba(255,0,68,0.4),
+      0 0 250px rgba(108,92,231,0.3);
+    transform-style: preserve-3d;
+    will-change: transform;
+    pointer-events: auto;
+  }
+  .center-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 32px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent 50%, rgba(255,0,68,0.1));
+    pointer-events: none;
+  }
+  @keyframes imageAppear {
+    0% { opacity: 0; transform: scale(0.3) rotate(-20deg) rotateY(180deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg) rotateY(0deg); }
+  }
+  @keyframes floatImage {
+    0%, 100% { transform: translateY(0) rotateY(0deg); }
+    50% { transform: translateY(-15px) rotateY(3deg); }
+  }
+  .center-image::before {
+    content: '';
+    position: absolute;
+    inset: -30px;
+    border-radius: 50px;
+    background: radial-gradient(circle, rgba(255,0,68,0.5), transparent 70%);
+    z-index: -1;
+    animation: glowPulse 2.5s ease-in-out infinite;
+    filter: blur(20px);
+  }
+  @keyframes glowPulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+
+  /* ===== АНИМАЦИЯ НАЖАТИЯ КАРТИНКИ ===== */
+  .center-image.pressed {
+    animation: pressImage 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes pressImage {
+    0% { transform: scale(1); }
+    25% { transform: scale(0.85); }
+    50% { transform: scale(1.15); }
+    75% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+  .center-image.shake {
+    animation: shakeImage 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  }
+  @keyframes shakeImage {
+    0%, 100% { transform: translateX(0); }
+    15% { transform: translateX(-20px) scale(0.96); }
+    30% { transform: translateX(20px) scale(1.04); }
+    45% { transform: translateX(-14px) scale(0.98); }
+    60% { transform: translateX(14px) scale(1.02); }
+    75% { transform: translateX(-6px) scale(0.99); }
+  }
+
+  /* ===== КНОПКА ЗАГЛУШИТЬ ===== */
+  .mute-btn {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9998;
+    padding: 20px 56px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(135deg, #ff0044, #ff6600, #ffcc00, #ff6600, #ff0044);
+    background-size: 400% 400%;
+    box-shadow:
+      0 15px 50px rgba(255,0,68,0.7),
+      0 0 0 0 rgba(255,0,68,0.8),
+      inset 0 2px 0 rgba(255,255,255,0.4),
+      inset 0 -2px 0 rgba(0,0,0,0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    animation: gradientShift 4s ease infinite;
+    overflow: hidden;
+    will-change: transform;
+  }
+  .mute-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    transition: left 0.7s;
+  }
+  .mute-btn:hover::before { left: 100%; }
+  .mute-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+    animation: gradientShift 4s ease infinite, pulseGlow 2s ease-in-out infinite;
+  }
+  .mute-btn.pressed {
+    animation: pressBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes pressBounce {
+    0% { transform: translateX(-50%) scale(1); }
+    25% { transform: translateX(-50%) scale(0.85); }
+    50% { transform: translateX(-50%) scale(1.15); }
+    75% { transform: translateX(-50%) scale(0.95); }
+    100% { transform: translateX(-50%) scale(1); }
+  }
+  .mute-btn.shake {
+    animation: shakeBack 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  }
+  @keyframes shakeBack {
+    0%, 100% { transform: translateX(-50%); }
+    15% { transform: translateX(calc(-50% - 12px)) scale(0.96); }
+    30% { transform: translateX(calc(-50% + 12px)) scale(1.04); }
+    45% { transform: translateX(calc(-50% - 8px)) scale(0.98); }
+    60% { transform: translateX(calc(-50% + 8px)) scale(1.02); }
+    75% { transform: translateX(calc(-50% - 4px)) scale(0.99); }
+  }
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  @keyframes pulseGlow {
+    0%, 100% {
+      box-shadow: 0 15px 50px rgba(255,0,68,0.7), 0 0 0 0 rgba(255,0,68,0.8), inset 0 2px 0 rgba(255,255,255,0.4);
+    }
+    50% {
+      box-shadow: 0 15px 50px rgba(255,0,68,0.7), 0 0 0 25px rgba(255,0,68,0), inset 0 2px 0 rgba(255,255,255,0.4);
+    }
+  }
+
+  /* ===== ЗАГРУЗКА ===== */
+  .loading {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 24px;
+    color: #888; font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    z-index: 5;
+    background: #0a0a14;
+  }
+  .loader {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,0,68,0.15);
+    border-top-color: #ff0044;
+    border-right-color: #ff6600;
+    animation: spin 0.9s linear infinite;
+    box-shadow: 0 0 30px rgba(255,0,68,0.5);
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  audio { display: none; }
+
+  /* ===== МОБИЛЬНАЯ АДАПТАЦИЯ ===== */
+  @media (max-width: 480px) {
+    .center-image { width: 78vw; border-radius: 26px; }
+    .mute-btn { padding: 17px 42px; font-size: 14px; letter-spacing: 2px; bottom: 30px; }
+    .glow-1, .glow-2, .glow-3, .glow-4 { opacity: 0.5; filter: blur(80px); }
+  }
+</style>
+</head>
+<body>
+
+  <div class="loading" id="loading">
+    <div class="loader"></div>
+    <div>Загрузка...</div>
+  </div>
+
+  <div class="bg-image" id="bgImage" style="display:none"></div>
+  <div class="glow-1" id="glow1" style="display:none"></div>
+  <div class="glow-2" id="glow2" style="display:none"></div>
+  <div class="glow-3" id="glow3" style="display:none"></div>
+  <div class="glow-4" id="glow4" style="display:none"></div>
+  <div class="bg-overlay" id="bgOverlay" style="display:none"></div>
+
+  <div class="particles" id="particles"></div>
+
+  <div class="center-wrap" id="centerWrap" style="display:none">
+    <div class="center-image" id="centerImage"></div>
+  </div>
+
+  <button class="mute-btn" id="muteBtn">🔇 Заглушить</button>
+
+  <audio id="audioEl" loop></audio>
+
+<script>
+(function() {
+  const IMAGE_URL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2LafYch-JbYhGaDDjdNwzlk3Nkjh7qy5d_ECPb7G2eQ&s';
+  const SOUND_URL = 'https://www.myinstants.com/media/sounds/dekodi-stonet.mp3';
+  const MUTE_FAKE = true;
+
+  const loading = document.getElementById('loading');
+  const bgImage = document.getElementById('bgImage');
+  const bgOverlay = document.getElementById('bgOverlay');
+  const glow1 = document.getElementById('glow1');
+  const glow2 = document.getElementById('glow2');
+  const glow3 = document.getElementById('glow3');
+  const glow4 = document.getElementById('glow4');
+  const particles = document.getElementById('particles');
+  const centerWrap = document.getElementById('centerWrap');
+  const centerImage = document.getElementById('centerImage');
+  const muteBtn = document.getElementById('muteBtn');
+  const audioEl = document.getElementById('audioEl');
+
+  let started = false;
+
+  function createParticles() {
+    const colors = ['#ff0044', '#ff6600', '#ffcc00', '#00d68f', '#6c5ce7', '#0088ff'];
+    for (let i = 0; i < 50; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDuration = (6 + Math.random() * 12) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      p.style.width = p.style.height = (2 + Math.random() * 5) + 'px';
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      p.style.background = color;
+      p.style.color = color;
+      particles.appendChild(p);
+    }
+  }
+  createParticles();
+
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    bgImage.style.backgroundImage = `url('${IMAGE_URL}')`;
+    centerImage.style.backgroundImage = `url('${IMAGE_URL}')`;
+    bgImage.style.display = 'block';
+    glow1.style.display = 'block';
+    glow2.style.display = 'block';
+    glow3.style.display = 'block';
+    glow4.style.display = 'block';
+    bgOverlay.style.display = 'block';
+    centerWrap.style.display = 'flex';
+    setTimeout(() => { loading.style.display = 'none'; }, 400);
+  };
+  img.onerror = () => {
+    loading.innerHTML = '<div style="color:#ff4757;font-size:16px;">Ошибка загрузки картинки</div>';
+  };
+  img.src = IMAGE_URL;
+
+  // ============================================================
+  // ЗАПУСК ЗВУКА + АНИМАЦИЯ
+  // ============================================================
+  function startPrank() {
+    if (started) {
+      if (audioEl.paused) {
+        audioEl.currentTime = 0;
+        audioEl.play().catch(() => {});
+      }
+      return;
+    }
+    started = true;
+
+    if (!audioEl.src) audioEl.src = SOUND_URL;
+    audioEl.currentTime = 0;
+    audioEl.volume = 1.0;
+    audioEl.play().catch(() => {});
+
+    muteBtn.classList.add('visible');
+
+    centerImage.classList.remove('pressed', 'shake');
+    void centerImage.offsetWidth;
+    centerImage.classList.add('pressed');
+    setTimeout(() => {
+      centerImage.classList.remove('pressed');
+      centerImage.classList.add('shake');
+      setTimeout(() => centerImage.classList.remove('shake'), 600);
+    }, 600);
+  }
+
+  // ============================================================
+  // КЛИК В ЛЮБОМ МЕСТЕ СТРАНИЦЫ
+  // ============================================================
+  document.body.addEventListener('click', (e) => {
+    if (e.target.closest('#muteBtn')) return;
+    startPrank();
+  });
+
+  document.body.addEventListener('touchstart', (e) => {
+    if (e.target.closest('#muteBtn')) return;
+    startPrank();
+  }, { passive: true });
+
+  // ============================================================
+  // КНОПКА «ЗАГЛУШИТЬ» — ФЕЙКОВАЯ
+  // ============================================================
+  muteBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    muteBtn.classList.remove('pressed', 'shake');
+    void muteBtn.offsetWidth;
+    muteBtn.classList.add('pressed');
+    setTimeout(() => {
+      muteBtn.classList.remove('pressed');
+      muteBtn.classList.add('shake');
+      setTimeout(() => muteBtn.classList.remove('shake'), 600);
+    }, 600);
+
+    if (MUTE_FAKE) {
+      muteBtn.classList.remove('visible');
+      setTimeout(() => muteBtn.classList.add('visible'), 200);
+    } else {
+      audioEl.pause();
+      audioEl.currentTime = 0;
+      muteBtn.classList.remove('visible');
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
