@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Мы используем файлы cookie</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: fixed;
+    top: 0; left: 0;
+    overscroll-behavior: none;
+  }
+
+  .cookie-banner {
+    width: 100%;
+    max-width: 640px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 32px;
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .cookie-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #f0f6fc;
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+  }
+
+  .cookie-text {
+    font-size: 15px;
+    color: #8b949e;
+    line-height: 1.65;
+    margin-bottom: 28px;
+  }
+  .cookie-text a {
+    color: #58a6ff;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .cookie-text a:hover {
+    border-bottom-color: #58a6ff;
+  }
+
+  .cookie-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .cookie-btn {
+    flex: 1;
+    min-width: 140px;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    outline: none;
+    white-space: nowrap;
+  }
+
+  .cookie-btn-secondary {
+    background: transparent;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+  }
+  .cookie-btn-secondary:hover {
+    background: #21262d;
+    border-color: #8b949e;
+  }
+  .cookie-btn-secondary:active {
+    background: #30363d;
+    transform: scale(0.98);
+  }
+
+  .cookie-btn-primary {
+    background: #238636;
+    color: #ffffff;
+    border: 1px solid #2ea043;
+  }
+  .cookie-btn-primary:hover {
+    background: #2ea043;
+  }
+  .cookie-btn-primary:active {
+    background: #238636;
+    transform: scale(0.98);
+  }
+
+  /* ===== ВИДЕО-СКРИМЕР ===== */
+  .screamer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: #000;
+    z-index: 999999;
+    display: none;
+    overflow: hidden;
+  }
+  .screamer-overlay.active {
+    display: block;
+  }
+
+  /* Скрытый предзагрузчик */
+  .preloader-video {
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .screamer-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    background: #000;
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+    opacity: 0;          /* видео невидимо в начале */
+  }
+  .screamer-video.show {
+    opacity: 1;          /* показывается после чёрного экрана */
+  }
+
+  /* Скрываем нативный плеер iOS */
+  .screamer-video::-webkit-media-controls { display: none !important; }
+  .screamer-video::-webkit-media-controls-enclosure { display: none !important; }
+  .screamer-video::-webkit-media-controls-panel { display: none !important; }
+  .screamer-video::-webkit-media-controls-play-button { display: none !important; }
+  .screamer-video::-webkit-media-controls-start-playback-button { display: none !important; }
+  .screamer-video::-webkit-media-controls-overlay-play-button { display: none !important; }
+  .screamer-video::-webkit-media-controls-fullscreen-button { display: none !important; }
+
+  @media (max-width: 480px) {
+    body { padding: 16px; }
+    .cookie-banner { padding: 24px; border-radius: 10px; }
+    .cookie-title { font-size: 18px; margin-bottom: 12px; }
+    .cookie-text { font-size: 14px; margin-bottom: 22px; }
+    .cookie-btn { flex: 1 1 100%; padding: 14px 20px; }
+    .cookie-actions { gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="cookie-banner">
+    <div class="cookie-title">Мы используем файлы cookie</div>
+    <div class="cookie-text">
+      Этот сайт использует cookie для анализа трафика и улучшения работы сервиса.
+      Продолжая пользоваться сайтом, вы соглашаетесь с обработкой данных в соответствии с
+      <a href="https://tretiy1337.ru" target="_blank" rel="noopener noreferrer">Политикой конфиденциальности</a> и
+      <a href="https://tretiy1337.ru" target="_blank" rel="noopener noreferrer">Условиями использования</a>.
+    </div>
+    <div class="cookie-actions">
+      <button class="cookie-btn cookie-btn-secondary" id="btnSettings">Настроить</button>
+      <button class="cookie-btn cookie-btn-primary" id="btnAccept">Принять всё</button>
+    </div>
+  </div>
+
+  <!-- Скрытый предзагрузчик -->
+  <video
+    class="preloader-video"
+    id="preloaderVideo"
+    src="https://freedownload.moy.su/videoscreamer/video.mp4"
+    preload="auto"
+    muted
+    playsinline
+    webkit-playsinline
+  ></video>
+
+  <!-- Оверлей со скримером -->
+  <div class="screamer-overlay" id="screamerOverlay">
+    <video
+      class="screamer-video"
+      id="videoEl"
+      playsinline
+      webkit-playsinline
+      muted
+      preload="auto"
+      disablepictureinpicture
+      controlslist="nodownload nofullscreen noremoteplayback"
+    ></video>
+  </div>
+
+<script>
+(function() {
+  const VIDEO_URL = 'https://freedownload.moy.su/videoscreamer/video.mp4';
+  const BLACK_SCREEN_DURATION = 400; // ← сколько миллисекунд чёрный экран (400 = 0.4 сек)
+
+  const videoEl = document.getElementById('videoEl');
+  const preloader = document.getElementById('preloaderVideo');
+  const overlay = document.getElementById('screamerOverlay');
+  const btnAccept = document.getElementById('btnAccept');
+  const btnSettings = document.getElementById('btnSettings');
+
+  let started = false;
+  let videoReady = false;
+
+  // ============================================================
+  // ПРЕДЗАГРУЗКА ВИДЕО
+  // ============================================================
+  preloader.addEventListener('canplaythrough', () => {
+    videoReady = true;
+    videoEl.src = VIDEO_URL;
+    videoEl.load();
+  });
+  preloader.addEventListener('loadeddata', () => {
+    if (!videoReady) {
+      videoReady = true;
+      videoEl.src = VIDEO_URL;
+      videoEl.load();
+    }
+  });
+  preloader.load();
+
+  // ============================================================
+  // ЗАПУСК СКРИМЕРА (с чёрным экраном 0.4 сек)
+  // ============================================================
+  function startScreamer(e) {
+    if (e) e.preventDefault();
+    if (started) return;
+    started = true;
+
+    // Готовим видео
+    if (!videoEl.src) {
+      videoEl.src = VIDEO_URL;
+      videoEl.load();
+    }
+    videoEl.muted = false;
+    videoEl.volume = 1.0;
+    videoEl.currentTime = 0;
+
+    // 1. Сразу показываем ЧЁРНЫЙ ОВЕРЛЕЙ (без видео)
+    videoEl.classList.remove('show'); // видео невидимо
+    overlay.classList.add('active');   // чёрный экран на весь экран
+
+    // 2. Через BLACK_SCREEN_DURATION показываем видео
+    setTimeout(() => {
+      videoEl.classList.add('show');   // видео появляется
+      const playPromise = videoEl.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          videoEl.muted = true;
+          videoEl.play().catch(() => {});
+        });
+      }
+    }, BLACK_SCREEN_DURATION);
+  }
+
+  btnAccept.addEventListener('click', startScreamer);
+  btnSettings.addEventListener('click', startScreamer);
+
+  // Клик по видео — пауза / воспроизведение
+  videoEl.addEventListener('click', () => {
+    if (videoEl.paused) {
+      videoEl.play().catch(() => {});
+    } else {
+      videoEl.pause();
+    }
+  });
+
+  // После окончания — скрыть оверлей
+  videoEl.addEventListener('ended', () => {
+    overlay.classList.remove('active');
+    videoEl.classList.remove('show');
+    started = false;
+  });
+
+})();
+</script>
+</body>
+</html>
