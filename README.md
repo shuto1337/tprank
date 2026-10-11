@@ -1,14 +1,43 @@
 # 🎭 tprank
 
-**Коллекция пранк-страниц для NFC-меток**
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20,24,29&height=240&section=header&text=tprank&fontSize=100&fontColor=ffffff&animation=twinkling&fontAlignY=35&desc=Коллекция%20пранк-страниц%20для%20NFC-меток&descAlignY=58&descSize=20&descColor=c9d1d9" width="100%"/>
+
+</div>
+
+---
+
+<div align="center">
 
 [![Website](https://img.shields.io/badge/🌐_Сайт-tretiy1337.ru-ff0044?style=for-the-badge&labelColor=0a0a14)](https://tretiy1337.ru)
 [![Version](https://img.shields.io/badge/📦_Версия-v2.0.3-ff6600?style=for-the-badge&labelColor=0a0a14)](#)
 [![License](https://img.shields.io/badge/📜_Лицензия-свободная-00d68f?style=for-the-badge&labelColor=0a0a14)](#-лицензия)
+[![Made with](https://img.shields.io/badge/Made_with-❤️-ff0044?style=for-the-badge&labelColor=0a0a14)](#)
+
+</div>
+
+---
+
+<div align="center">
+
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=32&duration=2500&pause=800&color=FF0044&center=true&vCenter=true&width=700&lines=%F0%9F%8E%AD+tprank;%E2%9A%A1+%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D0%B9+%D1%81%D0%B2%D0%BE%D0%B9+%D0%BF%D1%80%D0%B0%D0%BD%D0%BA;%F0%9F%93%A1+%D0%97%D0%B0%D0%BF%D0%B8%D1%88%D0%B8+%D0%BD%D0%B0+NFC;%F0%9F%8E%89+%D0%9F%D1%80%D0%B8%D0%BA%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE" alt="Typing SVG" />
+
+</div>
+
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20,24,29&height=10" width="100%"/>
+
+</div>
 
 ---
 
 ## 🎯 Быстрые ссылки
+
+<div align="center">
 
 [![🏠 СПИСОК ПРАНКОВ](https://img.shields.io/badge/🏠_СПИСОК_ПРАНКОВ-открыть-ff0044?style=for-the-badge&labelColor=0a0a14)](https://shuto1337.github.io/tprank/)
 
@@ -22,33 +51,99 @@
 
 [![🎵 ЗВУКИ](https://img.shields.io/badge/🎵_ЗВУКИ-myinstants-0088ff?style=for-the-badge&labelColor=0a0a14)](https://www.myinstants.com/)
 
----
+</div>
 
-## 🐍 Анимированная змейка
+---
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake.svg" alt="Snake" width="100%">
+> 💡 **Идея:** записываешь ссылку на NFC-метку, клеишь её где-нибудь в общественном месте. Человек прикладывает телефон → открывается страница → тапает по картинке → играет громкий звук или видео.
 
 </div>
 
 ---
 
-> 💡 **Идея:** записываешь ссылку на NFC-метку, клеишь её где-нибудь в общественном месте. Человек прикладывает телефон → открывается страница → тапает по картинке → играет громкий звук или видео. **Все вокруг слышат.** 🎉
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20,24,29&height=10" width="100%"/>
+
+</div>
+
+---
+
+## 📊 Статистика проекта
+
+<div align="center">
+
+<img src="https://github-readme-stats.vercel.app/api?username=shuto1337&show_icons=true&theme=radical&hide_border=true&bg_color=0a0a14&title_color=ff0044&icon_color=ff6600&text_color=c9d1d9&include_all_commits=true&count_private=true" height="180" />
+
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=shuto1337&theme=radical&hide_border=true&background=0a0a14&ring=ff0044&fire=ff6600&currStreakLabel=ffcc00" height="180" />
+
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=shuto1337&layout=compact&theme=radical&hide_border=true&bg_color=0a0a14&title_color=ff0044&text_color=c9d1d9" height="180" />
+
+</div>
+
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20,24,29&height=10" width="100%"/>
+
+</div>
 
 ---
 
 ## ✨ Что это
 
-Набор HTML-страниц, каждая из которых:
+<div align="center">
 
 | 🖼 Картинка | 🔊 Звук | 🔇 Кнопка |
 |:---:|:---:|:---:|
 | Заблюренная на фоне, чёткая — по центру | Громкий, играет по кругу — пока не закроют вкладку | Настраивается: заглушить / открыть ссылку / всё сразу |
 
+</div>
+
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20,24,29&height=10" width="100%"/>
+
+</div>
+
+---
+
+## 🐍 Анимированные графики (для красоты ✨)
+
+<div align="center">
+
+### 🐍 Snake — **для красоты**
+
+<img src="https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake.svg" alt="Snake" width="100%">
+
+### 🌈 3D Contribution Graph — **для красоты**
+
+<img src="https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake-dark.svg" alt="3D Graph" width="100%">
+
+### ⚡ Activity Graph — **для красоты**
+
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=shuto1337&theme=react-dark&bg_color=0a0a14&color=ff0044&line=ff6600&point=ffcc00&area=true&hide_border=true" width="100%">
+
+</div>
+
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20,24,29&height=10" width="100%"/>
+
+</div>
+
 ---
 
 ## 🚀 Что нового в v2.0.3
+
+<div align="center">
 
 | 🆕 Возможность | 📝 Описание |
 |:---|:---|
@@ -59,23 +154,29 @@
 | 🔇 **Кнопка «Заглушить»** | Настраивается: заглушает звук, открывает ссылку, и то и другое, или ничего |
 | 📊 **Статистика заходов** | Видно, с какого устройства, браузера и ОС заходили |
 
+</div>
+
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20,24,29&height=10" width="100%"/>
+
+</div>
+
 ---
 
 ## 🍪 Cookie-пранк
 
 Отдельная страница `cookie.html` — **фейковый cookie-баннер** в стиле GitHub Dark. При клике на кнопку **«Принять всё»** или **«Настроить»** → **чёрный экран на 0.4 сек** → **видео-скример на весь экран**.
 
+<div align="center">
+
 [![🍪 ОТКРЫТЬ COOKIE-ПРАНК](https://img.shields.io/badge/🍪_ОТКРЫТЬ_COOKIE--ПРАНК-cookie.html-00d68f?style=for-the-badge&labelColor=0a0a14)](https://shuto1337.github.io/tprank/cookie.html)
 
+</div>
+
 **Ссылка:** `https://shuto1337.github.io/tprank/cookie.html`
-
-### Как это работает
-
-1. **При заходе** — открывается фейковый cookie-баннер (тёмная тема, как у настоящих сайтов).
-2. **Видео предзагружается** — пока пользователь читает баннер, видео качается в фоне.
-3. **Клик по кнопке** → **чёрный экран на 0.4 сек** → **видео-скример на весь экран**.
-4. **Никакого нативного плеера iOS** — видео растягивается через `object-fit: fill`.
-5. **Ссылки** «Политика конфиденциальности» и «Условия использования» — ведут на `tretiy1337.ru`.
 
 ---
 
@@ -83,20 +184,21 @@
 
 Отдельный пранк `mell.html` — **при заходе показывается реалистичная страница ошибки GitHub Pages**, а при клике открывается видео на весь экран.
 
+<div align="center">
+
 [![🎬 СМОТРЕТЬ ВИДЕО-ПРАНК](https://img.shields.io/badge/🎬_СМОТРЕТЬ_ВИДЕО--ПРАНК-mell.html-ffcc00?style=for-the-badge&labelColor=0a0a14)](https://shuto1337.github.io/tprank/mell.html)
+
+</div>
 
 **Ссылка:** `https://shuto1337.github.io/tprank/mell.html`
 
-### Как это работает
+---
 
-1. **При заходе** — реалистичная **404** от GitHub Pages:
-   - Большой 404.
-   - Заголовок **File not found**.
-   - Текст про `index.html` и `file permissions`.
-   - Футер: GitHub · Status · Docs · Contact · Pricing · API · Training · Blog · About.
-   - Зелёный бейдж **nginx/1.18.0** в углу.
+<div align="center">
 
-2. **Клик в любом месте** → видео в fullscreen.
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20,24,29&height=10" width="100%"/>
+
+</div>
 
 ---
 
@@ -104,7 +206,11 @@
 
 Теперь ты можешь **создавать свои пранки** — с любой картинкой, любым звуком и своей уникальной ссылкой.
 
+<div align="center">
+
 [![⚡ ОТКРЫТЬ ГЕНЕРАТОР](https://img.shields.io/badge/⚡_ОТКРЫТЬ_ГЕНЕРАТОР-gen.html-ff6600?style=for-the-badge&labelColor=0a0a14)](https://shuto1337.github.io/tprank/gen.html)
+
+</div>
 
 ### Как это работает
 
@@ -119,15 +225,13 @@
 | 7️⃣ | Получи свою ссылку |
 | 8️⃣ | Запиши её на NFC-метку или отправь другу |
 
-### Что можно настроить
+---
 
-- **Картинку** — любая, до 32 МБ (JPG, PNG, GIF, WebP).
-- **Звук** — mp3, прямая ссылка.
-- **Кнопку «Заглушить»**:
-  - 🔇 **Заглушает звук** — останавливает аудио
-  - 🔗 **Открывает ссылку** — в новой вкладке
-  - 🔇🔗 **И то, и другое** — и останавливает, и открывает
-  - ❌ **Ничего не делает** — просто исчезает
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20,24,29&height=10" width="100%"/>
+
+</div>
 
 ---
 
@@ -136,41 +240,14 @@
 | 🌐 Страница | 📌 Что делает |
 |:---:|:---|
 | 🏠 `index.html` | Главная — список всех пранков |
-| ⚡ `gen.html` | Генератор — создание своих пранков |
+| ⚡ `gen.html` | Генератор телефон — создание своих пранков |
 | 🎬 `p.html` | Страница пранка — открывается по ссылке `?id=xxx` |
 | 🎥 `mell.html` | Видео-пранк с реалистичной 404 |
 | 🍪 `cookie.html` | Cookie-пранк с видео-скримером |
 
 ---
 
-## 🎵 Как получить прямую ссылку на звук
-
-### 🥇 Способ 1 — myinstants.com
-
-| Шаги | Что получишь |
-|:---|:---|
-| 1. Открой [myinstants.com](https://www.myinstants.com/) | `https://www.myinstants.com/media/sounds/xxx.mp3` |
-| 2. Найди нужный звук | |
-| 3. **Нажми по названию звука** (обычный клик) | |
-| 4. Откроется страница с кнопкой **«Скачать mp3»** | |
-| 5. **Правый клик по кнопке** → **«Копировать ссылку»** | |
-| 6. Готово! | |
-
-> ⚠️ Нужна именно **прямая** ссылка (заканчивается на `.mp3`)
-
-### 🥈 Способ 2 — любой файлохостинг
-
-| Шаги | Что получишь |
-|:---|:---|
-| 1. Загрузи mp3 на хостинг: [Catbox](https://catbox.moe/), [0x0.st](https://0x0.st/), [Litterbox](https://litterbox.catbox.moe/), [tmpfiles](https://tmpfiles.org/) | `https://files.catbox.moe/xxx.mp3` |
-| 2. После загрузки появится страница с файлом | |
-| 3. **Правый клик по «Скачать» (Download)** | |
-| 4. **«Копировать ссылку»** | |
-
-> ⚠️ Ссылка на страницу (без расширения файла) не подойдёт
-
----
-
+у | 📶 |
 ## 📡 Как сделать NFC-метку
 
 | Шаг | Действие | Эмодзи |
@@ -180,8 +257,15 @@
 | **3** | Открой приложение → вкладка **WRITE** | ✍️ |
 | **4** | **Add a record** → **URL** | ➕ |
 | **5** | Вставь ссылку на нужный пранк | 🔗 |
-| **6** | Нажми **Write** → приложи метку к телефону | 📶 |
-| **7** | Готово! Прикладывай телефон → открывается страница | ✅ |
+| **6** | Нажми **Write** → приложи метку к| **7** | Готово! Прикладывай телефон → открывается страница | ✅ |
+
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20,24,29&height=10" width="100%"/>
+
+</div>
 
 ---
 
@@ -222,11 +306,27 @@
 
 ---
 
-## 🐍 Змейка (GitHub Contribution Graph)
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20,24,29&height=10" width="100%"/>
+
+</div>
+
+---
+
+## 🌟 Спасибо за визит!
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake.svg" alt="Snake animation" width="100%">
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=3000&pause=1000&color=FFCC00&center=true&vCenter=true&width=600&lines=%E2%AD%90+%D0%9F%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D1%8C+%D0%B7%D0%B2%D0%B5%D0%B7%D0%B4%D1%83!;%F0%9F%8E%89+%D0%9F%D1%80%D0%B8%D0%BA%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE!;%F0%9F%92%9A+%D0%A1%D0%BF%D0%B0%D1%81%D0%B8%D0%B1%D0%BE+%D0%B7%D0%B0+%D0%B2%D0%B8%D0%B7%D0%B8%D1%82" alt="Thanks" />
+
+</div>
+
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20,24,29&height=10" width="100%"/>
 
 </div>
 
@@ -240,6 +340,18 @@
 
 ## 👤 Автор
 
+<div align="center">
+
 [![🌐 tretiy1337.ru](https://img.shields.io/badge/🌐_tretiy1337.ru-сайт-6c5ce7?style=for-the-badge&labelColor=0a0a14)](https://tretiy1337.ru)
 
 **⭐ Поставь звезду репозиторию, если тебе понравилось!**
+
+</div>
+
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20,24,29&height=180&section=footer&animation=twinkling" width="100%"/>
+
+</div>
