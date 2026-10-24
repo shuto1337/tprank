@@ -5,84 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tprank | tretiy1337.ru</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        /* Размытый фон — это image.jpg */
-        .blur-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: blur(20px);   /* степень размытия: чем больше число, тем сильнее */
-            z-index: -1;          /* фон уходит назад */
-            opacity: 0.9;         /* чуть прозрачнее, чтобы не было слишком темно */
-        }
-
-        /* Кнопка (чёткая картинка поверх фона) */
-        .sound-btn {
-            cursor: pointer;
-            border: none;
-            padding: 0;
-            background: none;
-            outline: none;
-            z-index: 1;           /* кнопка поверх фона */
-        }
-
-        .sound-btn img {
-            width: 200px;
-            height: auto;
-            display: block;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            transition: transform 0.1s, opacity 0.2s;
-        }
-
-        .sound-btn:hover img {
-            transform: scale(1.05);
-            opacity: 1;
-        }
-
-        .sound-btn:active img {
-            transform: scale(0.98);
-        }
+        body { margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden; display: flex; justify-content: center; align-items: center; position: relative; }
+        .blur-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(20px); z-index: -1; opacity: 0.9; }
+        .sound-btn { cursor: pointer; border: none; padding: 0; background: none; outline: none; z-index: 1; }
+        .sound-btn img { width: 200px; height: auto; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); transition: transform 0.1s, opacity 0.2s; }
+        .sound-btn:hover img { transform: scale(1.05); opacity: 1; }
+        .sound-btn:active img { transform: scale(0.98); }
     </style>
 </head>
 <body>
-
-    <!-- Фон: та же картинка, но размытая -->
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbsmI2yoMhUx1lJueN2VfX1-ypzcFiXyBtHj47kv9hsX4TrkNwAMc-OoPgCpRkdg2rfJkHcccB8Zk4K4mYD5FXC-8la-MY7-bubC8wbxvm&s=10" alt="" class="blur-bg">
-
-    <!-- Кнопка: та же картинка, но чёткая -->
     <button id="playBtn" class="sound-btn" aria-label="Воспроизвести звук">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbsmI2yoMhUx1lJueN2VfX1-ypzcFiXyBtHj47kv9hsX4TrkNwAMc-OoPgCpRkdg2rfJkHcccB8Zk4K4mYD5FXC-8la-MY7-bubC8wbxvm&s=10" alt="">
     </button>
-
-    <!-- Аудиофайл -->
-    <audio id="audioPlayer">
+    <audio id="audioPlayer" loop>
         <source src="https://www.myinstants.com/media/sounds/vizg-svini.mp3" type="audio/mpeg">
     </audio>
-
     <script>
         const playBtn = document.getElementById('playBtn');
         const audioPlayer = document.getElementById('audioPlayer');
-
         playBtn.addEventListener('click', () => {
+            // Если звук на паузе — запускаем. Если играет — ничего не делаем.
             if (audioPlayer.paused) {
-                audioPlayer.play().catch(e => console.log('Автовоспроизведение заблокировано браузером', e));
-            } else {
-                audioPlayer.pause();
+                audioPlayer.volume = 1.0;
+                audioPlayer.play().catch(e => console.log('Автовоспроизведение заблокировано', e));
             }
         });
     </script>
